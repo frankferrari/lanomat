@@ -1,6 +1,17 @@
 class GamesController < ApplicationController
   def index
-    @games = Game.order(votes: :desc, name: :asc)
+    @active_tab = params[:tab] || "vote"
+
+    # Base query
+    scope = Game.order(votes: :desc, name: :asc)
+
+    # Filter by Genre if present
+    if params[:genre].present? && params[:genre] != "All"
+      scope = scope.where(genre: params[:genre])
+    end
+
+    @games = scope
+
     @new_game = Game.new
   end
 

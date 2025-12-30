@@ -1,5 +1,5 @@
 <div class="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-purple-500/30 pb-20">
-    <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <div class="bg-purple-600 p-2 rounded-lg shadow-lg">
@@ -9,11 +9,20 @@
             </div>
 
             <nav class="flex bg-slate-800/50 p-1 rounded-xl border border-slate-700">
-                 <%# Tabs placeholder for future use %>
-                 <span class="px-3 py-1.5 rounded-lg text-sm font-medium bg-purple-600 text-white shadow-lg flex items-center gap-2">
+                <%= link_to games_path(tab: 'vote'), data: { turbo_frame: "tab_content" }, class: "px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 #{ @active_tab == 'vote' ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200' }" do %>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trophy w-4 h-4"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
-                    Voting
-                 </span>
+                    <span class="hidden sm:inline">Voting</span>
+                <% end %>
+
+                <%= link_to games_path(tab: 'wheel'), data: { turbo_frame: "tab_content" }, class: "px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 #{ @active_tab == 'wheel' ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200' }" do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dices w-4 h-4"><rect width="12" height="12" x="2" y="10" rx="2" ry="2"/><path d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6"/><path d="M6 18h.01"/><path d="M10 14h.01"/><path d="M15 6h.01"/><path d="M18 9h.01"/></svg>
+                    <span class="hidden sm:inline">Decider</span>
+                <% end %>
+
+                <%= link_to games_path(tab: 'manage'), data: { turbo_frame: "tab_content" }, class: "px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 #{ @active_tab == 'manage' ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200' }" do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings-2 w-4 h-4"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+                    <span class="hidden sm:inline">Manage</span>
+                <% end %>
             </nav>
 
             <div class="flex items-center gap-2">
@@ -25,39 +34,8 @@
     </header>
 
     <main class="max-w-6xl mx-auto p-4 sm:p-6 space-y-12">
-        <!-- Voting Section -->
-        <div class="space-y-6">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                    <h2 class="text-2xl font-bold flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-grid w-6 h-6 text-purple-500"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
-                        Voting Room
-                    </h2>
-                    <p class="text-slate-400 text-sm">Cast your votes for the next game</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <%= render partial: "game", collection: @games %>
-                
-                <% if @games.empty? %>
-                    <div class="col-span-full py-20 text-center text-slate-500 border-2 border-dashed border-slate-800 rounded-3xl italic">
-                        No games yet. Add some below!
-                    </div>
-                <% end %>
-            </div>
-        </div>
-
-        <!-- Management Section -->
-        <div class="space-y-8 pt-8 border-t border-slate-800/50">
-             <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="text-2xl font-bold">Add New Game</h2>
-                    <p class="text-slate-400 text-sm">Expand the library</p>
-                </div>
-            </div>
-
-            <%= render "form", game: @new_game %>
-        </div>
+        <%= turbo_frame_tag "tab_content" do %>
+            <%= render @active_tab == 'wheel' ? 'decider' : (@active_tab == 'manage' ? 'manage' : 'voting') %>
+        <% end %>
     </main>
 </div>

@@ -1,0 +1,29 @@
+<div class="space-y-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h2 class="text-2xl font-bold flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-grid w-6 h-6 text-purple-500"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+                Voting Room
+            </h2>
+            <p class="text-slate-400 text-sm">Cast your votes for the next game</p>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+            <%= link_to "ALL", games_path(tab: 'vote', genre: 'All'), class: "px-3 py-1 rounded-full text-[10px] font-black tracking-widest border transition-all #{ params[:genre].blank? || params[:genre] == 'All' ? 'bg-purple-600 border-purple-400 text-white' : 'bg-slate-900 border-slate-700 text-slate-400' }" %>
+            
+            <% Game.distinct.pluck(:genre).compact.each do |genre| %>
+                <%= link_to genre.upcase, games_path(tab: 'vote', genre: genre), class: "px-3 py-1 rounded-full text-[10px] font-black tracking-widest border transition-all #{ params[:genre] == genre ? 'bg-purple-600 border-purple-400 text-white' : 'bg-slate-900 border-slate-700 text-slate-400' }" %>
+            <% end %>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <%= render partial: "game", collection: @games %>
+        
+        <% if @games.empty? %>
+            <div class="col-span-full py-20 text-center text-slate-500 border-2 border-dashed border-slate-800 rounded-3xl italic">
+                No games found.
+            </div>
+        <% end %>
+    </div>
+</div>
