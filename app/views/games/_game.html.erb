@@ -3,7 +3,9 @@
 <div id="<%= dom_id game %>" class="relative group bg-slate-900 rounded-2xl border transition-all duration-300 p-5 flex flex-col justify-between <%= is_leader ? 'border-yellow-500/50 ring-1 ring-yellow-500/20 shadow-xl' : 'border-slate-800 hover:border-slate-700' %>">
   <% if is_leader %>
     <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-500 text-slate-950 text-[10px] font-black uppercase px-3 py-0.5 rounded-full flex items-center gap-1 shadow-lg z-10">
-      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trophy w-3 h-3"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0V5.625a2.625 2.625 0 11-5.25 0v2.875M6.75 6.75h.75q.75 0 .75-.75t-.75-.75h-.75A2.25 2.25 0 004.5 7.5v1.5a2.25 2.25 0 002.25 2.25M17.25 6.75h-.75q-.75 0-.75-.75t.75-.75h.75A2.25 2.25 0 0119.5 7.5v1.5a2.25 2.25 0 01-2.25 2.25" />
+      </svg>
       Leading
     </div>
   <% end %>
@@ -15,31 +17,42 @@
     </div>
     <div class="flex flex-col items-center bg-slate-950 border border-slate-800 p-2 rounded-xl min-w-[54px]">
       <%= button_to vote_game_path(game, direction: 'up'), method: :post, class: "p-1 hover:text-green-400 transition-colors" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-up w-5 h-5"><path d="m18 15-6-6-6 6"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+        </svg>
       <% end %>
       
       <span class="text-xl font-black text-white"><%= game.votes %></span>
       
       <%= button_to vote_game_path(game, direction: 'down'), method: :post, class: "p-1 hover:text-red-400 transition-colors" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down w-5 h-5"><path d="m6 9 6 6 6-6"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+        </svg>
       <% end %>
     </div>
   </div>
 
   <div class="grid grid-cols-2 gap-2">
     <div class="bg-slate-950/50 p-2 rounded-lg border border-slate-800/50 flex items-center gap-2">
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag w-3.5 h-3.5 text-purple-500"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l5 5a2 2 0 0 0 1.414 0l7-7a2 2 0 0 0 0-1.414l-5-5a2 2 0 0 0-1.414-1.414z"/><path d="M7 7h.01"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5 text-purple-500">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+      </svg>
       <span class="text-xs text-slate-300 truncate"><%= game.price.presence || 'Free' %></span>
     </div>
     <div class="bg-slate-950/50 p-2 rounded-lg border border-slate-800/50 flex items-center gap-2">
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users w-3.5 h-3.5 text-blue-500"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5 text-blue-500">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.75-6.374-2.036l-.12-.089C1.867 18.062.834 16.637.834 15a4.125 4.125 0 014.125-4.125c1.177 0 2.257.436 3.068 1.159A6 6 0 0113.5 15c0 .64-.1 1.258-.28 1.848m-5.496-6.837a3 3 0 100-6 3 3 0 000 6zm9.35 1.526a3 3 0 100-6 3 3 0 000 6z" />
+      </svg>
       <span class="text-xs text-slate-300"><%= game.max_players ? "#{game.max_players} Max" : '∞ Max' %></span>
     </div>
   </div>
   
   <div class="mt-4 flex justify-end">
     <%= button_to game_path(game), method: :delete, class: "p-2 text-slate-600 hover:text-red-500 transition-colors", form: { data: { turbo_confirm: "Are you sure?" } } do %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2 w-4 h-4"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+        </svg>
     <% end %>
   </div>
 </div>
