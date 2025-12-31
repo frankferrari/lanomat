@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  root "games#index"
+  root "votes#index"
 
-  resources :games, only: [ :index, :create, :destroy, :update ] do
+  # Voting interface
+  resources :votes, only: [ :index ] do
     member do
       post :vote
     end
@@ -11,6 +12,9 @@ Rails.application.routes.draw do
       post :reset
     end
   end
+
+  # Games management
+  resources :games, only: [ :index, :create, :destroy, :update ]
 
   resources :tags, only: [ :index, :create ]
 

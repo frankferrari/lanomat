@@ -1,43 +1,45 @@
 <%= turbo_stream_from "games" %>
 
 <div class="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-purple-500/30 pb-20">
-    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="bg-purple-600 p-2 rounded-lg shadow-lg">
-                    <%= heroicon "trophy", variant: :outline, options: { class: "w-5 h-5 text-white" } %>
-                </div>
-                <h1 class="font-bold text-xl tracking-tight hidden sm:block">LAN-O-MAT</h1>
-            </div>
+    <% content_for :header_actions do %>
+        <%= link_to votes_path, class: "p-2 text-slate-400 hover:text-purple-400 transition-colors bg-slate-800/50 rounded-lg border border-slate-700", title: "Back to Voting" do %>
+            <%= heroicon "arrow-left", variant: :outline, options: { class: "w-4 h-4" } %>
+        <% end %>
+    <% end %>
 
-            <nav class="flex bg-slate-800/50 p-1 rounded-xl border border-slate-700">
-                <%= link_to games_path(tab: 'vote'), data: { turbo_frame: "tab_content" }, class: "px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 #{ @active_tab == 'vote' ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200' }" do %>
-                    <%= heroicon "trophy", variant: :outline, options: { class: "w-4 h-4" } %>
-                    <span class="hidden sm:inline">Voting</span>
-                <% end %>
-
-                <%= link_to games_path(tab: 'wheel'), data: { turbo_frame: "tab_content" }, class: "px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 #{ @active_tab == 'wheel' ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200' }" do %>
-                    <%= heroicon "puzzle-piece", variant: :outline, options: { class: "w-4 h-4" } %>
-                    <span class="hidden sm:inline">Decider</span>
-                <% end %>
-
-                <%= link_to games_path(tab: 'manage'), data: { turbo_frame: "tab_content" }, class: "px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 #{ @active_tab == 'manage' ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200' }" do %>
-                    <%= heroicon "cog-6-tooth", variant: :outline, options: { class: "w-4 h-4" } %>
-                    <span class="hidden sm:inline">Manage</span>
-                <% end %>
-            </nav>
-
-            <div class="flex items-center gap-2">
-                <%= button_to reset_games_path, method: :post, class: "p-2 text-slate-400 hover:text-red-400 transition-colors bg-slate-800/50 rounded-lg border border-slate-700", title: "Reset All Votes", form: { data: { turbo_confirm: "Clear all votes for a new round?" } } do %>
-                    <%= heroicon "arrow-path", variant: :outline, options: { class: "w-4 h-4" } %>
-                <% end %>
-            </div>
-        </div>
-    </header>
+    <%= render "shared/header" %>
 
     <main class="max-w-6xl mx-auto p-4 sm:p-6 space-y-12">
-        <%= turbo_frame_tag "tab_content" do %>
-            <%= render @active_tab == 'wheel' ? 'games/wheel/index' : (@active_tab == 'manage' ? 'games/manage/index' : 'games/vote/index') %>
-        <% end %>
+        <div class="space-y-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold">Game Management</h2>
+                    <p class="text-slate-400 text-sm">Global library shared by everyone</p>
+                </div>
+            </div>
+
+            <!-- New Game Entry Form -->
+            <%= render "games/form", game: @new_game %>
+
+            <!-- Interactive Game Library Table -->
+            <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-950 text-slate-500 uppercase text-xs font-black tracking-widest border-b border-slate-800">
+                            <tr>
+                                <th class="px-6 py-4">Game Title</th>
+                                <th class="px-6 py-4">Tags</th>
+                                <th class="px-6 py-4">Price</th>
+                                <th class="px-6 py-4">Max Players</th>
+                                <th class="px-6 py-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800">
+                            <%= render partial: "games/table_row", collection: @games, as: :game %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </main>
 </div>

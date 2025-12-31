@@ -5,9 +5,9 @@
 
 <!-- Overlay backdrop - shown when checkbox is checked -->
 <label for="<%= picker_id %>" class="peer-checked/overlay:flex hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 items-center justify-center cursor-pointer">
-  <!-- Modal content - prevent closing when clicking inside -->
+<!-- Modal content - prevent closing when clicking inside -->
   <div class="bg-slate-900 rounded-2xl border border-slate-800 shadow-2xl w-full max-w-2xl mx-4 p-6 cursor-default" onclick="event.stopPropagation()">
-    <!-- Header -->
+    <!-- Modal Header: Label and Close Control -->
     <div class="flex items-center justify-between mb-6">
       <h3 class="text-xl font-bold text-white">Select Tags</h3>
       <label for="<%= picker_id %>" class="p-2 text-slate-400 hover:text-white transition-colors cursor-pointer">
@@ -15,11 +15,11 @@
       </label>
     </div>
 
-    <!-- Tag Selection Form or Div -->
+    <!-- Selection Content: Dynamic based on persistence state -->
     <% if local_assigns[:f] %>
         <!-- Nested Mode (New Game) -->
         <div class="space-y-6">
-            <%= render "games/manage/tags_list", f: f, game: game %>
+            <%= render "shared/tags/display_tags", f: f, game: game %>
             
             <div class="flex gap-3 justify-end">
                 <label for="<%= picker_id %>" class="px-6 py-2.5 rounded-xl font-bold text-slate-400 hover:text-white transition-colors cursor-pointer">
@@ -30,7 +30,7 @@
     <% else %>
         <!-- Standalone Mode (Existing Game) -->
         <%= form_with(model: game, class: "space-y-6") do |f| %>
-            <%= render "games/manage/tags_list", f: f, game: game %>
+            <%= render "shared/tags/display_tags", f: f, game: game %>
 
             <div class="flex gap-3 justify-end">
                 <label for="<%= picker_id %>" class="px-6 py-2.5 rounded-xl font-bold text-slate-400 hover:text-white transition-colors cursor-pointer">

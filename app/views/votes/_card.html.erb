@@ -1,8 +1,10 @@
+<!-- Logic: Identify leading game for special highlighting -->
 <% is_leader = game_iteration.index == 0 && game.votes > 0 %>
 
 <div id="<%= dom_id game %>" class="relative group/card bg-slate-900 rounded-2xl border transition-all duration-300 p-5 flex flex-col justify-between <%= is_leader ? 'border-yellow-500/50 ring-1 ring-yellow-500/20 shadow-xl' : 'border-slate-800 hover:border-slate-700' %> 
     group-data-[view=list]/view:grid group-data-[view=list]/view:grid-cols-12 group-data-[view=list]/view:items-center group-data-[view=list]/view:gap-4 group-data-[view=list]/view:p-3">
   
+  <!-- Leader Badge (visible in Grid view only) -->
   <% if is_leader %>
     <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-500 text-slate-950 text-xs font-black uppercase px-3 py-0.5 rounded-full flex items-center gap-1 shadow-lg z-10 
         group-data-[view=list]/view:hidden">
@@ -11,6 +13,7 @@
     </div>
   <% end %>
 
+  <!-- Game Information and Media -->
   <div class="flex justify-between items-start mb-0 group-data-[view=list]/view:contents group-data-[view=list]/view:mb-0">
     <div class="group-data-[view=list]/view:col-span-10 group-data-[view=list]/view:order-1 flex flex-col justify-center gap-2">
       <h3 class="font-bold text-md leading-tight group-hover/card:text-purple-400 transition-colors truncate flex items-center gap-2">
@@ -52,13 +55,14 @@
         group-data-[view=list]/view:flex-row group-data-[view=list]/view:py-1 group-data-[view=list]/view:px-3 group-data-[view=list]/view:gap-3 group-data-[view=list]/view:min-w-0
         group-data-[view=list]/view:col-span-2 group-data-[view=list]/view:order-2 group-data-[view=list]/view:justify-self-end">
       
-      <%= button_to vote_game_path(game, direction: 'up'), method: :post, class: "p-1 hover:text-green-400 transition-colors group/up" do %>
+      <!-- Vote Interaction Controls -->
+      <%= button_to vote_vote_path(game, direction: 'up'), method: :post, class: "p-1 hover:text-green-400 transition-colors group/up" do %>
         <%= heroicon "chevron-up", variant: :outline, options: { class: "w-5 h-5 group-active/up:scale-90 transition-transform" } %>
       <% end %>
       
       <span class="text-xl font-black text-white group-data-[view=list]/view:text-base min-w-6 text-center"><%= game.votes %></span>
       
-      <%= button_to vote_game_path(game, direction: 'down'), method: :post, class: "p-1 hover:text-red-400 transition-colors group/down" do %>
+      <%= button_to vote_vote_path(game, direction: 'down'), method: :post, class: "p-1 hover:text-red-400 transition-colors group/down" do %>
         <%= heroicon "chevron-down", variant: :outline, options: { class: "w-5 h-5 group-active/down:scale-90 transition-transform" } %>
       <% end %>
     </div>

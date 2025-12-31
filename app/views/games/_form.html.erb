@@ -1,4 +1,5 @@
 <%= form_with(model: game, class: "bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl grid grid-cols-1 sm:grid-cols-4 gap-4") do |form| %>
+  <!-- Form Validation Messages -->
   <% if game.errors.any? %>
     <div style="color: red" class="col-span-full mb-4">
       <h2><%= pluralize(game.errors.count, "error") %> prohibited this game from being saved:</h2>
@@ -10,11 +11,13 @@
     </div>
   <% end %>
 
+  <!-- Content: Title Input -->
   <div class="space-y-1 sm:col-span-1">
     <%= form.label :name, "TITLE", class: "text-xs font-bold text-slate-500 uppercase tracking-widest ml-1" %>
     <%= form.text_field :name, required: true, placeholder: "Quake III Arena", class: "w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-purple-500 outline-none transition-all text-white placeholder-slate-700" %>
   </div>
 
+  <!-- Content: Tag Selection Trigger -->
   <div class="space-y-1">
     <%= form.label :tag_ids, "TAGS", class: "text-xs font-bold text-slate-500 uppercase tracking-widest ml-1" %>
     <div class="flex gap-2">
@@ -35,6 +38,7 @@
     </div>
   </div>
 
+  <!-- Details: Price and Capacity -->
   <div class="space-y-1">
     <%= form.label :price, "PRICE", class: "text-xs font-bold text-slate-500 uppercase tracking-widest ml-1" %>
     <%= form.text_field :price, placeholder: "Free", class: "w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-purple-500 outline-none transition-all text-white placeholder-slate-700" %>
@@ -51,5 +55,5 @@
     </button>
   </div>
 
-  <%= render "games/manage/tags", game: game, f: form %>
+  <%= render "shared/tags/pick_tags", game: game, f: form %>
 <% end %>

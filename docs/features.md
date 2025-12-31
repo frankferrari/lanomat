@@ -36,3 +36,7 @@
         - animation (with 5s countdown) plays on all clients simultaneously
         - ending at pre-calculated result
         - shows winner 
+
+Nice to Have:
+- Add gradiant of background color transformation depending on the votes
+- Allow downvotes
