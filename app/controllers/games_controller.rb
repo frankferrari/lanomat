@@ -1,12 +1,12 @@
 class GamesController < ApplicationController
   def index
     # Management index view
-    @games = Game.includes(:tags).order(name: :asc)
-    @new_game = Game.new
+    @games = Current.game_session.games.includes(:tags).order(name: :asc)
+    @new_game = Current.game_session.games.new
   end
 
   def create
-    @game = Game.new(game_params)
+    @game = Current.game_session.games.new(game_params)
     if @game.save
       respond_to do |format|
         format.html { redirect_to games_path, notice: "Game added successfully." }

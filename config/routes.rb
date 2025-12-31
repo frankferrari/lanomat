@@ -1,7 +1,15 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  root "votes#index"
+  root "sessions#new"
+
+  # Session management
+  resource :session, only: [ :new, :destroy ] do
+    collection do
+      post :create_host
+      post :create_join
+    end
+  end
 
   # Voting interface
   resources :votes, only: [ :index ] do

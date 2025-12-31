@@ -19,7 +19,20 @@
             <% end %>
         </nav>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-4">
+            <% if current_user %>
+                <div class="hidden md:flex flex-col items-end mr-2">
+                    <span class="text-xs text-slate-400 font-mono">CODE: <span class="text-white font-bold selection:bg-purple-500"><%= current_user.game_session.code %></span></span>
+                    <div class="flex items-center gap-2">
+                         <span class="text-sm font-medium text-white"><%= current_user.name %></span>
+                         <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-700 text-slate-300 uppercase"><%= current_user.role %></span>
+                    </div>
+                </div>
+
+                <%= button_to session_path, method: :delete, class: "p-2 text-slate-400 hover:text-white transition-colors", title: "Logout" do %>
+                    <%= heroicon "arrow-right-on-rectangle", variant: :outline, options: { class: "w-5 h-5" } %>
+                <% end %>
+            <% end %>
             <%= yield :header_actions if content_for?(:header_actions) %>
         </div>
     </div>

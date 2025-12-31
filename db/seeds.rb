@@ -4,6 +4,18 @@
 
 Game.destroy_all
 Tag.destroy_all
+User.destroy_all
+GameSession.destroy_all
+
+# Create Default Session
+session = GameSession.create!(code: "AAAAA")
+puts "Created Session: #{session.code}"
+
+# Create Users
+host = User.create!(name: "HostUser", role: :host, game_session: session)
+player1 = User.create!(name: "Player1", role: :player, game_session: session)
+player2 = User.create!(name: "Player2", role: :player, game_session: session)
+puts "Created Users: #{host.name}, #{player1.name}, #{player2.name}"
 
 games_data = [
   { name: "Conan Exiles", tags: [ "Survival", "RPG" ], price: "~4.36 €", max_players: 40 },
@@ -36,7 +48,7 @@ games_data = [
 ]
 
 games_data.each do |game_attr|
-  game = Game.find_or_create_by!(name: game_attr[:name]) do |g|
+  game = session.games.find_or_create_by!(name: game_attr[:name]) do |g|
     g.price = game_attr[:price]
     g.max_players = game_attr[:max_players]
   end

@@ -1,42 +1,41 @@
 ## Features
 
-- session authentication (session code to share)
-    - user with types: host, player and mods
-    - when hosting / creating a session, the user is automatically set as host
-        - get session code
-        - set name
-    - when joining a session, the user is automatically set as player
-    - when joining a session as player 
-        - set name
-        - set session code
-        - if name already exists, join/become as this user
-    
-- use pundit for authorization
-    - host can do everything
-    - player can vote and manage games
-    - mods can do everything
+### Session Authentication
+- [x] Session authentication (session code to share)
+  - [x] User types: host, player, mods
+  - [x] When hosting/creating a session, user automatically set as host
+    - [x] Get session code
+    - [x] Set name
+  - [x] When joining a session, user automatically set as player
+  - [x] When joining as player
+    - [x] Set name
+    - [x] Set session code
+    - [x] If name already exists, join/become as this user
 
-- session settings page
-    - change user type of session users
-    - delete session user
+### Authorization
+- [ ] Use Pundit for authorization
+  - [ ] Host can do everything
+  - [ ] Player can vote and manage games
+- [ ] Change user type of session users
+- [ ] Delete session user
 
-- Voting settings
-    - users can vote x times for one game
-    - When setting "previous game", all other games of different genre get x votes
-    - Block "previous game" (previous game is not allowed)
-    - Set Voting countdown time (Countdown voting is allowed)
-    - Enable "Wheel of Fortune" after voting ended
-        - Set games included (top 3, top 5, all games)
-        - Set proportioal representation (a part for each vote)
+### Voting Settings
+- [ ] Users can vote x times for one game
+- [ ] When setting "previous game", all other games of different genre get x votes
+- [ ] Block "previous game" (previous game is not allowed)
+- [ ] Set voting countdown time (countdown voting is allowed)
+- [ ] Enable "Wheel of Fortune" after voting ended
+  - [ ] Set games included (top 3, top 5, all games)
+  - [ ] Set proportional representation (a part for each vote)
 
-- "Wheel of Fortune"
-    - becomes an full size overlay of the voting page
-    - synchronized "Wheel of Fortune" for all users
-        - (random) result is calculated server side and sent to clients with start time
-        - animation (with 5s countdown) plays on all clients simultaneously
-        - ending at pre-calculated result
-        - shows winner 
+### Wheel of Fortune
+- [ ] Becomes a full size overlay of the voting page
+- [ ] Synchronized "Wheel of Fortune" for all users
+  - [ ] (Random) result calculated server side and sent to clients with start time
+  - [ ] Animation (with 5s countdown) plays on all clients simultaneously
+  - [ ] Ends at pre-calculated result
+  - [ ] Shows winner
 
-Nice to Have:
-- Add gradiant of background color transformation depending on the votes
-- Allow downvotes
+### Nice to Have
+- [ ] Add gradient background color transformation depending on votes
+- [ ] Allow downvotes
