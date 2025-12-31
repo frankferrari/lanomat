@@ -1,0 +1,55 @@
+<%= form_with(model: game, class: "bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl grid grid-cols-1 sm:grid-cols-4 gap-4") do |form| %>
+  <% if game.errors.any? %>
+    <div style="color: red" class="col-span-full mb-4">
+      <h2><%= pluralize(game.errors.count, "error") %> prohibited this game from being saved:</h2>
+      <ul>
+        <% game.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="space-y-1 sm:col-span-1">
+    <%= form.label :name, "TITLE", class: "text-xs font-bold text-slate-500 uppercase tracking-widest ml-1" %>
+    <%= form.text_field :name, required: true, placeholder: "Quake III Arena", class: "w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-purple-500 outline-none transition-all text-white placeholder-slate-700" %>
+  </div>
+
+  <div class="space-y-1">
+    <%= form.label :tag_ids, "TAGS", class: "text-xs font-bold text-slate-500 uppercase tracking-widest ml-1" %>
+    <div class="flex gap-2">
+      <div class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 min-h-11 flex flex-wrap gap-1 items-center">
+        <% if game.tags.any? %>
+          <% game.tags.each do |tag| %>
+            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-purple-600/20 border border-purple-500/30 text-purple-300 text-xs font-bold uppercase tracking-wider">
+              <%= tag.name %>
+            </span>
+          <% end %>
+        <% else %>
+          <span class="text-slate-500 text-sm">No tags</span>
+        <% end %>
+      </div>
+      <label for="tag-picker-new-game" class="bg-slate-800 hover:bg-slate-700 p-3 rounded-xl shadow-lg transition-colors cursor-pointer">
+        <%= heroicon "tag", variant: :outline, options: { class: "w-5 h-5 text-white" } %>
+      </label>
+    </div>
+  </div>
+
+  <div class="space-y-1">
+    <%= form.label :price, "PRICE", class: "text-xs font-bold text-slate-500 uppercase tracking-widest ml-1" %>
+    <%= form.text_field :price, placeholder: "Free", class: "w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-purple-500 outline-none transition-all text-white placeholder-slate-700" %>
+  </div>
+
+  <div class="flex items-end gap-2">
+    <div class="space-y-1 flex-1">
+      <%= form.label :max_players, "MAX PLAYERS", class: "text-xs font-bold text-slate-500 uppercase tracking-widest ml-1" %>
+      <%= form.number_field :max_players, placeholder: "16", class: "w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-purple-500 outline-all text-white placeholder-slate-700" %>
+    </div>
+    
+    <button type="submit" class="bg-purple-600 hover:bg-purple-500 p-3 rounded-xl shadow-lg transition-colors">
+      <%= heroicon "plus", variant: :outline, options: { class: "w-5 h-5 text-white" } %>
+    </button>
+  </div>
+<% end %>
+
+<%= render "games/manage/tags", game: game %>

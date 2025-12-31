@@ -1,0 +1,40 @@
+<div class="space-y-6" data-controller="view-mode">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+            <div>
+                <h2 class="text-2xl font-bold flex items-center gap-2">
+                    <%= heroicon "squares-2x2", variant: :outline, options: { class: "w-6 h-6 text-purple-500" } %>
+                    Voting Room
+                </h2>
+                <p class="text-slate-400 text-sm">Cast your votes for the next game</p>
+            </div>
+
+            <div class="flex items-center bg-slate-900 border border-slate-800 rounded-lg p-1 h-fit self-start">
+                <button data-view-mode-target="gridBtn" data-action="click->view-mode#setGrid" class="p-1 px-2 rounded-md transition-colors text-slate-400 hover:text-white" title="Grid View">
+                    <%= heroicon "squares-2x2", variant: :outline, options: { class: "w-5 h-5" } %>
+                </button>
+                <button data-view-mode-target="listBtn" data-action="click->view-mode#setList" class="p-1 px-2 rounded-md transition-colors text-slate-400 hover:text-white" title="List View">
+                    <%= heroicon "bars-3", variant: :outline, options: { class: "w-5 h-5" } %>
+                </button>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+            <%= link_to "ALL", games_path(tab: 'vote', tag: 'All'), class: "px-3 py-1 rounded-full text-xs font-black tracking-widest border transition-all #{ params[:tag].blank? || params[:tag] == 'All' ? 'bg-purple-600 border-purple-400 text-white' : 'bg-slate-900 border-slate-700 text-slate-400' }" %>
+            
+            <% Tag.order(:name).each do |tag| %>
+                <%= link_to tag.name.upcase, games_path(tab: 'vote', tag: tag.name), class: "px-3 py-1 rounded-full text-xs font-black tracking-widest border transition-all #{ params[:tag] == tag.name ? 'bg-purple-600 border-purple-400 text-white' : 'bg-slate-900 border-slate-700 text-slate-400' }" %>
+            <% end %>
+        </div>
+    </div>
+
+    <div id="games_grid" data-view-mode-target="container" class="group/view grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 transition-all duration-300 data-[view=list]:grid-cols-1 data-[view=list]:gap-2 data-[view=list]:max-w-2xl data-[view=list]:mx-auto">
+        <%= render partial: "games/vote/card", collection: @games, as: :game %>
+        
+        <% if @games.empty? %>
+            <div class="col-span-full py-20 text-center text-slate-500 border-2 border-dashed border-slate-800 rounded-3xl italic">
+                No games found.
+            </div>
+        <% end %>
+    </div>
+</div>

@@ -113,6 +113,8 @@ GEM
       raabro (~> 1.4)
     globalid (1.3.0)
       activesupport (>= 6.1)
+    heroicon (1.0.0)
+      rails (>= 5.2)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.2.2)
@@ -347,6 +349,7 @@ DEPENDENCIES
   brakeman
   capybara
   debug
+  heroicon
   importmap-rails
   jbuilder
   kamal

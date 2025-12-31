@@ -10,14 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_30_185207) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_30_230759) do
+  create_table "game_tags", force: :cascade do |t|
+    t.integer "game_id", null: false
+    t.integer "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id", "tag_id"], name: "index_game_tags_on_game_id_and_tag_id", unique: true
+    t.index ["game_id"], name: "index_game_tags_on_game_id"
+    t.index ["tag_id"], name: "index_game_tags_on_tag_id"
+  end
+
   create_table "games", force: :cascade do |t|
     t.string "name", null: false
-    t.string "genre"
     t.string "price"
     t.integer "max_players"
     t.integer "votes", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
+  add_foreign_key "game_tags", "games"
+  add_foreign_key "game_tags", "tags"
 end

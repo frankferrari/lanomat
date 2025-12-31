@@ -38,6 +38,18 @@ class GamesController < ApplicationController
     end
   end
 
+  def update
+    @game = Game.find(params[:id])
+    if @game.update(game_params)
+      respond_to do |format|
+        format.html { redirect_to root_path, notice: "Game updated." }
+        format.turbo_stream { head :ok }
+      end
+    else
+      render :index, status: :unprocessable_entity
+    end
+  end
+
   def vote
     @game = Game.find(params[:id])
     direction = params[:direction] == "down" ? -1 : 1
@@ -72,6 +84,6 @@ class GamesController < ApplicationController
   private
 
   def game_params
-    params.require(:game).permit(:name, :genre, :price, :max_players)
+    params.require(:game).permit(:name, :price, :max_players, tag_ids: [])
   end
 end

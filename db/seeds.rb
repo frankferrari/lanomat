@@ -3,43 +3,50 @@
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 
 Game.destroy_all
+Tag.destroy_all
 
 games_data = [
-  { name: "Conan Exiles", genre: "Survival RPG", price: "~4.36 €", max_players: 40 },
-  { name: "Icarus", genre: "Survival", price: "~3.39 €", max_players: 8 },
-  { name: "Helldivers 2", genre: "TPS", price: "~22.75 €", max_players: 4 },
-  { name: "Underlords", genre: "Auto Battler", price: "Free", max_players: 8 },
-  { name: "Overwatch 2", genre: "Hero Shooter", price: "Free", max_players: 10 },
-  { name: "Starcraft 2", genre: "RTS", price: "", max_players: nil },
-  { name: "Heroes of the Storm", genre: "MOBA", price: "Free", max_players: 10 },
-  { name: "Company of Heroes 1", genre: "RTS", price: "", max_players: 8 },
-  { name: "Company of Heroes 2", genre: "RTS", price: "", max_players: 8 },
-  { name: "Company of Heroes 3", genre: "RTS", price: "", max_players: 8 },
-  { name: "Crusader Kings 3", genre: "Grand Strategy", price: "", max_players: 32 },
-  { name: "Stellaris", genre: "Grand Strategy", price: "", max_players: 32 },
-  { name: "DayZ", genre: "Survival", price: "", max_players: 100 },
-  { name: "Project Zomboid", genre: "Survival", price: "", max_players: 16 },
-  { name: "7 Days to Die", genre: "Survival", price: "", max_players: nil },
-  { name: "Dont Starve together", genre: "Survival", price: "", max_players: nil },
-  { name: "Battlefield 6", genre: "FPS", price: "", max_players: nil },
-  { name: "Battlebits", genre: "FPS", price: "", max_players: nil },
-  { name: "Wreckfest 1", genre: "Racing", price: "", max_players: nil },
-  { name: "Wreckfest 2", genre: "Racing", price: "", max_players: nil },
-  { name: "Battlefield 6 Portal", genre: "FPS", price: "", max_players: nil },
-  { name: "Diablo 2 Ressuracted", genre: "ARPG", price: "", max_players: nil },
-  { name: "Transport Tycoon Deluxe", genre: "Simulation", price: "", max_players: nil },
-  { name: "Hell Let Loose", genre: "FPS", price: "", max_players: nil },
-  { name: "Squad", genre: "FPS", price: "", max_players: nil },
-  { name: "Command and Conquer red Alert 2", genre: "RTS", price: "", max_players: nil },
-  { name: "Valheim", genre: "Survival", price: "", max_players: nil }
+  { name: "Conan Exiles", tags: [ "Survival", "RPG" ], price: "~4.36 €", max_players: 40 },
+  { name: "Icarus", tags: [ "Survival" ], price: "~3.39 €", max_players: 8 },
+  { name: "Helldivers 2", tags: [ "TPS", "Co-op" ], price: "~22.75 €", max_players: 4 },
+  { name: "Underlords", tags: [ "Auto Battler", "Strategy" ], price: "Free", max_players: 8 },
+  { name: "Overwatch 2", tags: [ "Hero Shooter", "FPS" ], price: "Free", max_players: 10 },
+  { name: "Starcraft 2", tags: [ "RTS", "Strategy" ], price: "", max_players: nil },
+  { name: "Heroes of the Storm", tags: [ "MOBA" ], price: "Free", max_players: 10 },
+  { name: "Company of Heroes 1", tags: [ "RTS", "Strategy" ], price: "", max_players: 8 },
+  { name: "Company of Heroes 2", tags: [ "RTS", "Strategy" ], price: "", max_players: 8 },
+  { name: "Company of Heroes 3", tags: [ "RTS", "Strategy" ], price: "", max_players: 8 },
+  { name: "Crusader Kings 3", tags: [ "Grand Strategy", "Strategy" ], price: "", max_players: 32 },
+  { name: "Stellaris", tags: [ "Grand Strategy", "Strategy" ], price: "", max_players: 32 },
+  { name: "DayZ", tags: [ "Survival", "FPS" ], price: "", max_players: 100 },
+  { name: "Project Zomboid", tags: [ "Survival", "Zombie" ], price: "", max_players: 16 },
+  { name: "7 Days to Die", tags: [ "Survival", "Zombie" ], price: "", max_players: nil },
+  { name: "Dont Starve together", tags: [ "Survival", "Co-op" ], price: "", max_players: nil },
+  { name: "Battlefield 6", tags: [ "FPS", "Shooter" ], price: "", max_players: nil },
+  { name: "Battlebits", tags: [ "FPS", "Shooter" ], price: "", max_players: nil },
+  { name: "Wreckfest 1", tags: [ "Racing" ], price: "", max_players: nil },
+  { name: "Wreckfest 2", tags: [ "Racing" ], price: "", max_players: nil },
+  { name: "Battlefield 6 Portal", tags: [ "FPS", "Shooter" ], price: "", max_players: nil },
+  { name: "Diablo 2 Ressuracted", tags: [ "ARPG", "RPG" ], price: "", max_players: nil },
+  { name: "Transport Tycoon Deluxe", tags: [ "Simulation", "Strategy" ], price: "", max_players: nil },
+  { name: "Hell Let Loose", tags: [ "FPS", "Shooter" ], price: "", max_players: nil },
+  { name: "Squad", tags: [ "FPS", "Shooter" ], price: "", max_players: nil },
+  { name: "Command and Conquer red Alert 2", tags: [ "RTS", "Strategy" ], price: "", max_players: nil },
+  { name: "Valheim", tags: [ "Survival", "Co-op" ], price: "", max_players: nil }
 ]
 
 games_data.each do |game_attr|
-  Game.find_or_create_by!(name: game_attr[:name]) do |game|
-    game.genre = game_attr[:genre]
-    game.price = game_attr[:price]
-    game.max_players = game_attr[:max_players]
+  game = Game.find_or_create_by!(name: game_attr[:name]) do |g|
+    g.price = game_attr[:price]
+    g.max_players = game_attr[:max_players]
   end
+
+  # Associate tags
+  tag_names = game_attr[:tags] || []
+  tags = tag_names.map do |tag_name|
+    Tag.find_or_create_by!(name: tag_name)
+  end
+  game.tags = tags
 end
 
-puts "Created #{Game.count} games."
+puts "Created #{Game.count} games and #{Tag.count} tags."

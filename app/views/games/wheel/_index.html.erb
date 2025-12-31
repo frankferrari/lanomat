@@ -1,7 +1,7 @@
 <div class="flex flex-col items-center justify-center space-y-8 py-10" 
      data-controller="wheel">
     <%= turbo_stream_from "games_wheel_data" %>
-    <%= render "games/wheel_data", games: @games %>
+    <%= render "games/wheel/data", games: @games %>
 
     
     <div class="text-center space-y-2">
@@ -13,7 +13,7 @@
                 type="button"
                 data-action="wheel#filter"
                 data-filter="top5"
-                class="px-4 py-1 rounded-full text-[10px] font-black tracking-widest transition-all bg-purple-600 text-white"
+                class="px-4 py-1 rounded-full text-xs font-black tracking-widest transition-all bg-purple-600 text-white"
             >
                 TOP 5 VOTED
             </button>
@@ -21,7 +21,7 @@
                 type="button"
                 data-action="wheel#filter"
                 data-filter="all"
-                class="px-4 py-1 rounded-full text-[10px] font-black tracking-widest transition-all text-slate-500"
+                class="px-4 py-1 rounded-full text-xs font-black tracking-widest transition-all text-slate-500"
             >
                 ALL GAMES
             </button>
@@ -39,17 +39,17 @@
                 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-purple-600 hover:bg-purple-500 flex items-center justify-center text-white shadow-xl disabled:opacity-50 z-20"
             >
                 <div data-wheel-target="playIcon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play w-8 h-8 ml-1"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                    <%= heroicon "play", variant: :solid, options: { class: "w-8 h-8 ml-1" } %>
                 </div>
                 <div data-wheel-target="spinIcon" class="hidden">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw w-8 h-8 animate-spin"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 12"/><path d="M3 3v9h9"/></svg>
+                    <%= heroicon "arrow-path", variant: :outline, options: { class: "w-8 h-8 animate-spin" } %>
                 </div>
             </button>
         </div>
     </div>
 
     <div data-wheel-target="winnerDisplay" class="hidden bg-slate-900 p-8 rounded-3xl border-2 border-green-500 shadow-2xl text-center max-w-sm w-full">
-        <p class="text-green-400 text-[10px] font-black uppercase tracking-widest mb-2">Selected Game</p>
+        <p class="text-green-400 text-xs font-black uppercase tracking-widest mb-2">Selected Game</p>
         <h3 data-wheel-target="winnerName" class="text-4xl font-black mb-1"></h3>
         <p data-wheel-target="winnerMeta" class="text-slate-400 text-sm mb-6"></p>
         <button
