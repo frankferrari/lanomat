@@ -22,23 +22,48 @@
 
             <div class="grid gap-4">
               <!-- Bonus Votes Pool -->
-              <div class="flex items-center justify-between p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50">
-                <div>
-                  <label class="block text-sm font-semibold text-white">Bonus Votes Pool</label>
-                  <p class="text-xs text-slate-400">Give games up to X more votes</p>
+              <div class="p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50" data-controller="toggle">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <label class="block text-sm font-semibold text-white">Bonus Votes Pool</label>
+                    <p class="text-xs text-slate-400">Enable global bonus votes</p>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <%= f.check_box :enable_bonus_votes, class: "sr-only peer", data: { toggle_target: "input", action: "change->toggle#toggle" } %>
+                    <div class="w-11 h-6 bg-slate-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                  </label>
                 </div>
-                <%= f.number_field :bonus_votes, value: Current.game_session.bonus_votes, class: "w-20 bg-slate-950 border-slate-700 text-white rounded-xl focus:ring-purple-500 focus:border-purple-500 text-center font-bold" %>
+
+                <div class="hidden mt-4 pt-4 border-t border-slate-700/50" data-toggle-target="content">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-medium text-slate-400">Total Bonus Votes</span>
+                    <%= f.number_field :bonus_votes, class: "w-20 bg-slate-950 border-slate-700 text-white rounded-xl focus:ring-purple-500 focus:border-purple-500 text-center font-bold", data: { toggle_default: 0 } %>
+                  </div>
+                </div>
               </div>
 
-              <!-- Block Previous Game -->
-              <div class="flex items-center justify-between p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 opacity-50">
-                <div>
-                  <label class="block text-sm font-semibold text-white">Block Previous Winner</label>
-                  <p class="text-xs text-slate-400">Exclude last played game</p>
+              <!-- Punish Previous Game -->
+              <div class="p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50" data-controller="toggle">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <label class="block text-sm font-semibold text-white">Punish Previous Game Tags</label>
+                    <p class="text-xs text-slate-400">Punishes last played game by their assigned tags</p>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <%= f.check_box :punish_previous_game_tags, class: "sr-only peer", data: { toggle_target: "input", action: "change->toggle#toggle" } %>
+                    <div class="w-11 h-6 bg-slate-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                  </label>
                 </div>
-                <div class="relative inline-flex items-center cursor-not-allowed">
-                  <input type="checkbox" disabled class="sr-only peer">
-                  <div class="w-11 h-6 bg-slate-700 rounded-full peer-checked:bg-purple-600"></div>
+
+                <div class="hidden mt-4 space-y-4 pt-4 border-t border-slate-700/50" data-toggle-target="content">
+                  
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <label class="block text-xs font-semibold text-white">Penalty Votes</label>
+                      <p class="text-[10px] text-slate-500 italic">Votes to subtract from similar games</p>
+                    </div>
+                    <%= f.number_field :previous_game_penalty, class: "w-20 bg-slate-950 border-slate-700 text-white rounded-xl focus:ring-purple-500 focus:border-purple-500 text-center font-bold", data: { toggle_default: 0 } %>
+                  </div>
                 </div>
               </div>
 
@@ -50,16 +75,16 @@
                     <p class="text-xs text-slate-400">Enable countdown timer</p>
                   </div>
                   <div class="relative inline-flex items-center cursor-not-allowed">
-                    <input type="checkbox" disabled class="sr-only peer/countdown">
+                    <input type="checkbox" disabled class="sr-only peer">
                     <div class="w-11 h-6 bg-slate-700 rounded-full peer-checked:bg-purple-600"></div>
                   </div>
                 </div>
                 
-                <div class="hidden peer-checked/countdown:block mt-4 pt-4 border-t border-slate-700/50">
+                <div class="hidden mt-4 pt-4 border-t border-slate-700/50">
                   <div class="flex items-center justify-between">
                     <span class="text-xs font-medium text-slate-400">Duration</span>
                     <div class="flex items-center gap-2">
-                      <input type="number" value="60" disabled class="w-20 bg-slate-950 border-slate-700 text-white rounded-xl text-center font-bold cursor-not-allowed">
+                      <input type="number" disabled value="60" class="w-20 bg-slate-950 border-slate-700 text-white rounded-xl text-center font-bold cursor-not-allowed">
                       <span class="text-xs text-slate-500 font-bold uppercase">sec</span>
                     </div>
                   </div>
@@ -82,12 +107,12 @@
                   <p class="text-xs text-slate-400">Tie-breaker wheel at the end</p>
                 </div>
                 <div class="relative inline-flex items-center cursor-not-allowed">
-                  <input type="checkbox" disabled class="sr-only peer/wheel">
+                  <input type="checkbox" disabled class="sr-only peer">
                   <div class="w-11 h-6 bg-slate-700 rounded-full peer-checked:bg-pink-600"></div>
                 </div>
               </div>
 
-              <div class="hidden peer-checked/wheel:block mt-4 space-y-4 border-t border-slate-700/50 pt-4">
+              <div class="hidden mt-4 space-y-4 border-t border-slate-700/50 pt-4">
                  <div class="flex items-center justify-between">
                     <div>
                       <label class="block text-xs font-semibold text-white">Include Top Games Only</label>

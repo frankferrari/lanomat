@@ -10,13 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_31_230242) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_31_234714) do
   create_table "game_sessions", force: :cascade do |t|
     t.string "code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "bonus_votes"
+    t.integer "previous_game_id"
+    t.integer "previous_game_penalty", default: 2
+    t.boolean "enable_bonus_votes", default: false
+    t.boolean "punish_previous_game_tags", default: false
     t.index ["code"], name: "index_game_sessions_on_code", unique: true
+    t.index ["previous_game_id"], name: "index_game_sessions_on_previous_game_id"
   end
 
   create_table "game_tags", force: :cascade do |t|
@@ -67,6 +72,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_230242) do
     t.index ["user_id"], name: "index_votes_on_user_id"
   end
 
+  add_foreign_key "game_sessions", "games", column: "previous_game_id"
   add_foreign_key "game_tags", "games"
   add_foreign_key "game_tags", "tags"
   add_foreign_key "games", "game_sessions"

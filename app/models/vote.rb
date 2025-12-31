@@ -30,6 +30,6 @@ class Vote < ApplicationRecord
   private
 
   def update_game_score
-    game.update(votes_score: game.votes.sum(:weight))
+    game.update_score!
   end
 end
