@@ -1,39 +1,47 @@
 <tr id="<%= dom_id game %>" class="hover:bg-slate-800/30 transition-colors group">
-    <td class="px-6 py-3">
+    <td class="px-4 py-3">
         <%= form_with(model: game, data: { controller: "auto-submit", action: "input->auto-submit#submit change->auto-submit#submit" }) do |f| %>
             <%= f.text_field :name, class: "bg-slate-800/30 border border-slate-700/50 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 w-full font-bold text-slate-200 px-3 py-2 placeholder-slate-600 rounded-lg transition-all" %>
         <% end %>
     </td>
-    <td class="px-6 py-3">
-        <div class="flex gap-2 items-center">
-            <div class="flex-1 flex flex-wrap gap-1 min-h-10 items-center">
-                <% if game.tags.any? %>
-                    <% game.tags.each do |tag| %>
-                        <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-purple-600/20 border border-purple-500/30 text-purple-300 text-xs font-black uppercase tracking-tighter">
-                            <%= tag.name %>
-                        </span>
-                    <% end %>
-                <% else %>
-                    <span class="text-slate-500 text-xs">No tags</span>
-                <% end %>
+    <td class="px-4 py-3">
+        <%= form_with(model: game, data: { controller: "auto-submit", action: "change->auto-submit#submit" }) do |f| %>
+            <div class="relative" 
+                 data-controller="combobox"
+                 data-combobox-available-value="<%= Tag.pluck(:name).to_json %>"
+                 data-combobox-existing-value="<%= game.tags.pluck(:name).to_json %>">
+                 
+                <!-- Reduced padding input for table view -->
+                <div class="w-full bg-slate-800/30 border border-slate-700/50 rounded-lg px-2 py-1.5 focus-within:border-purple-500/50 focus-within:ring-1 focus-within:ring-purple-500/30 transition-all flex flex-wrap gap-1.5 items-center min-h-[38px]">
+                    <div data-combobox-target="selectedContainer" class="flex flex-wrap gap-1.5"></div>
+                    
+                    <input type="text" 
+                           data-combobox-target="input"
+                           data-action="input->combobox#input keydown->combobox#keydown focus->combobox#open click->combobox#open"
+                           placeholder="+" 
+                           class="bg-transparent border-none outline-none text-slate-300 placeholder-slate-600 flex-1 min-w-[60px] text-xs h-6 focus:ring-0 p-0"
+                           autocomplete="off">
+                </div>
+
+                <div data-combobox-target="hiddenInputContainer" class="hidden"></div>
+                
+                <div data-combobox-target="suggestions" 
+                     class="absolute top-full left-0 w-64 mt-1 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl z-50 max-h-48 overflow-y-auto hidden">
+                </div>
             </div>
-            <label for="tag-picker-<%= game.id %>" class="p-2 text-slate-600 hover:text-purple-500 transition-colors cursor-pointer">
-                <%= heroicon "tag", variant: :outline, options: { class: "w-4 h-4" } %>
-            </label>
-        </div>
-        <%= render "shared/tags/pick_tags", game: game %>
+        <% end %>
     </td>
-    <td class="px-6 py-3">
+    <td class="px-4 py-3">
         <%= form_with(model: game, data: { controller: "auto-submit", action: "input->auto-submit#submit change->auto-submit#submit" }) do |f| %>
             <%= f.text_field :price, class: "bg-slate-800/30 border border-slate-700/50 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 text-slate-400 px-3 py-2 w-full rounded-lg transition-all" %>
         <% end %>
     </td>
-    <td class="px-6 py-3">
+    <td class="px-4 py-3">
         <%= form_with(model: game, data: { controller: "auto-submit", action: "input->auto-submit#submit change->auto-submit#submit" }) do |f| %>
-            <%= f.number_field :max_players, class: "bg-slate-800/30 border border-slate-700/50 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 text-slate-400 px-3 py-2 w-20 rounded-lg transition-all" %>
+            <%= f.number_field :max_players, class: "bg-slate-800/30 border border-slate-700/50 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 text-slate-400 px-3 py-2 w-full rounded-lg transition-all" %>
         <% end %>
     </td>
-    <td class="px-6 py-3 text-right">
+    <td class="px-4 py-3 text-right">
         <%= button_to game_path(game), method: :delete, class: "p-2 text-slate-600 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100", form: { data: { turbo_confirm: "Delete this game completely?" } } do %>
             <%= heroicon "trash", variant: :outline, options: { class: "w-4 h-4" } %>
         <% end %>
