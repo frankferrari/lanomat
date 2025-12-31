@@ -47,6 +47,8 @@
     </div>
 
     <%# Vote Controls %>
+    <%# Vote Controls %>
+    <% current_weight = current_user.votes.find_by(game: game)&.weight || 0 %>
     <div class="flex flex-col items-center bg-slate-950 border border-slate-800 p-2 rounded-xl min-w-14">
       <%= button_to vote_vote_path(game, direction: 'up', view: @view_mode || 'grid'), 
           method: :post, 
@@ -55,9 +57,21 @@
             options: { class: "w-5 h-5 group-active/up:scale-90 transition-transform" } %>
       <% end %>
       
-      <span class="text-xl font-black min-w-6 text-center <%= voted ? 'text-green-400' : 'text-white' %>">
-        <%= game.votes_score %>
-      </span>
+      <div class="flex flex-col items-center gap-0">
+        <% 
+          vote_color = case current_weight
+                       when 0 then "text-white"
+                       when 1 then "text-green-400"
+                       when 2 then "text-lime-400"
+                       when 3 then "text-yellow-400"
+                       when 4 then "text-orange-400"
+                       else "text-red-500"
+                       end
+        %>
+        <span class="text-xl font-black min-w-6 text-center leading-none <%= vote_color %>">
+          <%= game.votes_score %>
+        </span>
+      </div>
       
       <%= button_to vote_vote_path(game, direction: 'down', view: @view_mode || 'grid'), 
           method: :post, 

@@ -1,0 +1,14 @@
+<% 
+   bonus_used = current_user.votes.sum { |v| (v.weight || 1) - 1 } 
+   bonus_total = Current.game_session.bonus_votes || 0
+   bonus_remaining = bonus_total - bonus_used
+%>
+<div id="bonus_votes_counter" class="flex items-center gap-2 text-sm text-slate-400">
+  <p>Cast your votes for the next game</p>
+  <% if bonus_total > 0 %>
+    <span class="mx-2 text-slate-600">|</span>
+    <span class="<%= bonus_remaining > 0 ? 'text-green-400' : 'text-slate-500' %> font-bold">
+      <%= bonus_remaining %> Bonus Votes Left
+    </span>
+  <% end %>
+</div>

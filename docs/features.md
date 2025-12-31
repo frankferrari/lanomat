@@ -18,7 +18,7 @@
   - [ ] Player can vote and manage games
 
 ### Voting Settings
-- [ ] Users can vote x times for one game
+- [X] Users can apply more than one vote, as bonus votes from the bonus pool
 - [ ] When setting "previous game", all other games of different genre get x votes
 - [ ] Block "previous game" (previous game is not allowed)
 - [ ] Set voting countdown time (countdown voting is allowed)

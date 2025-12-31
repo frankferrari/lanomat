@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_31_221655) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_31_230242) do
   create_table "game_sessions", force: :cascade do |t|
     t.string "code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "bonus_votes"
     t.index ["code"], name: "index_game_sessions_on_code", unique: true
   end
 

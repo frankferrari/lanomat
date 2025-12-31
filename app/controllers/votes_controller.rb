@@ -18,11 +18,30 @@ class VotesController < ApplicationController
     existing_vote = current_user.votes.find_by(game: @game)
 
     if direction == "up"
-      # Add vote if not already voted
-      current_user.votes.create(game: @game) unless existing_vote
+      if existing_vote
+        # Try to increment weight
+        existing_vote.weight += 1
+        unless existing_vote.save
+          flash.now[:alert] = existing_vote.errors.full_messages.join(", ")
+          # Reload to reset any invalid changes in memory
+          existing_vote.reload
+        end
+      else
+        # Create new vote with weight 1 (standard vote)
+        new_vote = current_user.votes.build(game: @game, weight: 1)
+        unless new_vote.save
+           flash.now[:alert] = new_vote.errors.full_messages.join(", ")
+        end
+      end
     else
-      # Remove vote if exists
-      existing_vote&.destroy
+      if existing_vote
+        if existing_vote.weight > 1
+          existing_vote.weight -= 1
+          existing_vote.save
+        else
+          existing_vote.destroy
+        end
+      end
     end
 
     @game.reload

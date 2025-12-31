@@ -1,3 +1,7 @@
 <%= turbo_stream.replace dom_id(@game) do %>
   <%= render partial: "votes/card_#{@view_mode}", locals: { game: @game, voted: @voted } %>
 <% end %>
+
+<%= turbo_stream.replace "bonus_votes_counter" do %>
+  <%= render partial: "votes/bonus_counter" %>
+<% end %>

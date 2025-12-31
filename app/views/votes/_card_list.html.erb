@@ -41,7 +41,9 @@
   </div>
 
   <%# Vote Controls (spans 2 columns) %>
-  <div class="col-span-2 justify-self-end flex flex-row items-center bg-slate-950 border border-slate-800 py-1 px-3 rounded-xl gap-3">
+    <%# Vote Controls (spans 2 columns) %>
+    <% current_weight = current_user.votes.find_by(game: game)&.weight || 0 %>
+    <div class="col-span-2 justify-self-end flex flex-row items-center bg-slate-950 border border-slate-800 py-1 px-3 rounded-xl gap-3">
     <%= button_to vote_vote_path(game, direction: 'up', view: @view_mode || 'list'), 
         method: :post, 
         class: "p-1 transition-colors group/up #{voted ? 'text-green-400' : 'text-slate-400 hover:text-green-400'}" do %>
@@ -49,9 +51,21 @@
           options: { class: "w-5 h-5 group-active/up:scale-90 transition-transform" } %>
     <% end %>
     
-    <span class="text-base font-black min-w-6 text-center <%= voted ? 'text-green-400' : 'text-white' %>">
-      <%= game.votes_score %>
-    </span>
+    <div class="flex flex-col items-center min-w-6">
+      <% 
+        vote_color = case current_weight
+                     when 0 then "text-white"
+                     when 1 then "text-green-400"
+                     when 2 then "text-lime-400"
+                     when 3 then "text-yellow-400"
+                     when 4 then "text-orange-400"
+                     else "text-red-500"
+                     end
+      %>
+      <span class="text-base font-black text-center <%= vote_color %>">
+        <%= game.votes_score %>
+      </span>
+    </div>
     
     <%= button_to vote_vote_path(game, direction: 'down', view: @view_mode || 'list'), 
         method: :post, 
