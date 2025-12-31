@@ -20,22 +20,15 @@
             </div>
 
             <% if current_user.host? %>
-                <input type="checkbox" id="settings_modal_toggle" class="peer hidden">
-                <div class="p-1 bg-slate-800/50 rounded-xl border border-slate-700 flex">
-                    <label for="settings_modal_toggle" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 cursor-pointer text-slate-400 hover:text-slate-200 peer-checked:bg-purple-600 peer-checked:text-white peer-checked:shadow-lg" title="Settings">
+                <div data-controller="modal-overlay" class="p-1 bg-slate-800/50 rounded-xl border border-slate-700 flex">
+                    <button data-action="modal-overlay#open" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-700" title="Settings">
                         <%= heroicon "adjustments-horizontal", variant: :outline, options: { class: "w-4 h-4" } %>
                         <span class="hidden sm:inline">Settings</span>
-                    </label>
-                </div>
+                    </button>
 
-                <!-- Settings Modal Overlay -->
-                <div class="fixed inset-0 z-[100] hidden peer-checked:flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
-                    <label for="settings_modal_toggle" class="fixed inset-0 cursor-default"></label>
-                    <div class="relative w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 my-auto">
-                        <%= render "settings/modal_form" %>
-                    </div>
+                    <%= render "shared/settings_modal" %>
                 </div>
-            <% end %>
+<% end %>
         </nav>
 
         <div class="flex items-center gap-4">

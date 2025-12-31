@@ -4,7 +4,7 @@
     <%= render "shared/header" %>
 
     <main class="max-w-6xl mx-auto p-4 sm:p-6 space-y-12">
-        <div class="space-y-6" data-controller="view-mode" data-view-mode-current-value="<%= @view_mode %>">
+        <turbo-frame id="votes_view" class="block space-y-6" data-controller="view-mode" data-view-mode-current-value="<%= @view_mode %>">
             <!-- Title and View Toggle Row -->
             <div class="flex items-center justify-between gap-4">
                 <div>
@@ -19,13 +19,13 @@
                     <%= link_to votes_path(view: "grid", tag: params[:tag]), 
                         class: "p-1 px-2 rounded-md transition-colors #{@view_mode == 'grid' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'}",
                         title: "Grid View",
-                        data: { turbo_frame: "games_view", action: "click->view-mode#save", view_mode_value_param: "grid" } do %>
+                        data: { turbo_action: "replace", action: "click->view-mode#save", view_mode_value_param: "grid" } do %>
                         <%= heroicon "squares-2x2", variant: :outline, options: { class: "w-5 h-5" } %>
                     <% end %>
                     <%= link_to votes_path(view: "list", tag: params[:tag]), 
                         class: "p-1 px-2 rounded-md transition-colors #{@view_mode == 'list' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'}",
                         title: "List View",
-                        data: { turbo_frame: "games_view", action: "click->view-mode#save", view_mode_value_param: "list" } do %>
+                        data: { turbo_action: "replace", action: "click->view-mode#save", view_mode_value_param: "list" } do %>
                         <%= heroicon "bars-3", variant: :outline, options: { class: "w-5 h-5" } %>
                     <% end %>
                 </div>
@@ -33,25 +33,27 @@
 
             <!-- Tag-based Filtering Tabs -->
             <div class="flex flex-wrap gap-2">
-                <%= link_to "ALL", votes_path(tag: 'All', view: @view_mode), class: "px-3 py-1 rounded-full text-xs font-black tracking-widest border transition-all #{ params[:tag].blank? || params[:tag] == 'All' ? 'bg-purple-600 border-purple-400 text-white' : 'bg-slate-900 border-slate-700 text-slate-400' }" %>
+                <%= link_to "ALL", votes_path(tag: 'All', view: @view_mode), 
+                    class: "px-3 py-1 rounded-full text-xs font-black tracking-widest border transition-all #{ params[:tag].blank? || params[:tag] == 'All' ? 'bg-purple-600 border-purple-400 text-white' : 'bg-slate-900 border-slate-700 text-slate-400' }",
+                    data: { turbo_action: "replace" } %>
                 
                 <% Tag.order(:name).each do |tag| %>
-                    <%= link_to tag.name.upcase, votes_path(tag: tag.name, view: @view_mode), class: "px-3 py-1 rounded-full text-xs font-black tracking-widest border transition-all #{ params[:tag] == tag.name ? 'bg-purple-600 border-purple-400 text-white' : 'bg-slate-900 border-slate-700 text-slate-400' }" %>
+                    <%= link_to tag.name.upcase, votes_path(tag: tag.name, view: @view_mode), 
+                        class: "px-3 py-1 rounded-full text-xs font-black tracking-widest border transition-all #{ params[:tag] == tag.name ? 'bg-purple-600 border-purple-400 text-white' : 'bg-slate-900 border-slate-700 text-slate-400' }",
+                        data: { turbo_action: "replace" } %>
                 <% end %>
             </div>
 
             <!-- Games Display Container -->
-            <turbo-frame id="games_view">
-                <div id="games_grid" class="<%= @view_mode == 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4' : 'flex flex-col gap-2 max-w-2xl mx-auto' %> transition-all duration-300">
-                    <%= render partial: "votes/card_#{@view_mode}", collection: @games, as: :game %>
-                    
-                    <% if @games.empty? %>
-                        <div class="col-span-full py-20 text-center text-slate-500 border-2 border-dashed border-slate-800 rounded-3xl italic">
-                            No games found.
-                        </div>
-                    <% end %>
-                </div>
-            </turbo-frame>
-        </div>
+            <div id="games_grid" class="<%= @view_mode == 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4' : 'flex flex-col gap-2 max-w-2xl mx-auto' %> transition-all duration-300">
+                <%= render partial: "votes/card_#{@view_mode}", collection: @games, as: :game %>
+                
+                <% if @games.empty? %>
+                    <div class="col-span-full py-20 text-center text-slate-500 border-2 border-dashed border-slate-800 rounded-3xl italic">
+                        No games found.
+                    </div>
+                <% end %>
+            </div>
+        </turbo-frame>
     </main>
 </div>

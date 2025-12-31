@@ -1,9 +1,6 @@
 class SettingsController < ApplicationController
   before_action :ensure_host
 
-  def show
-  end
-
   def update
     # Placeholder for update logic
   end
