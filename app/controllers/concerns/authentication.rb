@@ -14,9 +14,11 @@ module Authentication
   end
 
   def set_current_attributes
-    if (user_id = session[:user_id])
+    user_id = session[:user_id] || cookies.signed[:user_id]
+    if user_id
       Current.user = User.find_by(id: user_id)
       Current.game_session = Current.user&.game_session
+      session[:user_id] ||= Current.user&.id
     end
   end
 
@@ -26,12 +28,14 @@ module Authentication
 
   def login(user)
     session[:user_id] = user.id
+    cookies.permanent.signed[:user_id] = user.id
     Current.user = user
     Current.game_session = user.game_session
   end
 
   def logout
     session[:user_id] = nil
+    cookies.delete(:user_id)
     Current.user = nil
     Current.game_session = nil
   end

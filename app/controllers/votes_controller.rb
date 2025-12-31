@@ -9,6 +9,7 @@ class VotesController < ApplicationController
     end
 
     @games = scope
+    @view_mode = params[:view].presence_in(%w[grid list]) || "grid"
   end
 
   def vote

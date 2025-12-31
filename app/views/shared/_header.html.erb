@@ -7,22 +7,34 @@
             <h1 class="font-bold text-xl tracking-tight hidden sm:block">LAN-O-MAT</h1>
         </div>
 
-        <nav class="flex bg-slate-800/50 p-1 rounded-xl border border-slate-700">
-            <%= link_to votes_path, class: "px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 #{current_page?(votes_path) ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'}" do %>
-                <%= heroicon "trophy", variant: :outline, options: { class: "w-4 h-4" } %>
-                <span class="hidden sm:inline">Voting</span>
-            <% end %>
-
-            <%= link_to games_path, class: "px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 #{current_page?(games_path) ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'}" do %>
-                <%= heroicon "cog-6-tooth", variant: :outline, options: { class: "w-4 h-4" } %>
-                <span class="hidden sm:inline">Manage</span>
-            <% end %>
-
-            <% if current_user&.host? %>
-                <%= link_to settings_path, class: "px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 #{current_page?(settings_path) ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'}" do %>
-                    <%= heroicon "adjustments-horizontal", variant: :outline, options: { class: "w-4 h-4" } %>
-                    <span class="hidden sm:inline">Settings</span>
+        <nav class="flex items-center gap-2">
+            <div class="flex bg-slate-800/50 p-1 rounded-xl border border-slate-700">
+                <%= link_to votes_path, class: "px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 #{current_page?(votes_path) ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'}" do %>
+                    <%= heroicon "bolt", variant: :outline, options: { class: "w-4 h-4" } %>
+                    <span class="hidden sm:inline">Voting</span>
                 <% end %>
+                <%= link_to games_path, class: "px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 #{current_page?(games_path) ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'}" do %>
+                    <%= heroicon "puzzle-piece", variant: :outline, options: { class: "w-4 h-4" } %>
+                    <span class="hidden sm:inline">Games</span>
+                <% end %>
+            </div>
+
+            <% if current_user.host? %>
+                <input type="checkbox" id="settings_modal_toggle" class="peer hidden">
+                <div class="p-1 bg-slate-800/50 rounded-xl border border-slate-700 flex">
+                    <label for="settings_modal_toggle" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 cursor-pointer text-slate-400 hover:text-slate-200 peer-checked:bg-purple-600 peer-checked:text-white peer-checked:shadow-lg" title="Settings">
+                        <%= heroicon "adjustments-horizontal", variant: :outline, options: { class: "w-4 h-4" } %>
+                        <span class="hidden sm:inline">Settings</span>
+                    </label>
+                </div>
+
+                <!-- Settings Modal Overlay -->
+                <div class="fixed inset-0 z-[100] hidden peer-checked:flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
+                    <label for="settings_modal_toggle" class="fixed inset-0 cursor-default"></label>
+                    <div class="relative w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 my-auto">
+                        <%= render "settings/modal_form" %>
+                    </div>
+                </div>
             <% end %>
         </nav>
 
@@ -36,11 +48,12 @@
                     </div>
                 </div>
 
+
+
                 <%= button_to session_path, method: :delete, class: "p-2 text-slate-400 hover:text-white transition-colors", title: "Logout" do %>
                     <%= heroicon "arrow-right-on-rectangle", variant: :outline, options: { class: "w-5 h-5" } %>
                 <% end %>
             <% end %>
-            <%= yield :header_actions if content_for?(:header_actions) %>
         </div>
     </div>
 </header>

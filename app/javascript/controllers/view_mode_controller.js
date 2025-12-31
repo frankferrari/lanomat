@@ -1,42 +1,24 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static targets = ["container", "gridBtn", "listBtn"]
+    static values = { current: String }
 
     connect() {
-        this.viewMode = localStorage.getItem("viewMode") || "grid"
-        this.applyViewMode()
+        // On page load, check if localStorage has a preferred view mode
+        const savedMode = localStorage.getItem("viewMode")
+
+        // If saved mode differs from current and we're not already navigating
+        if (savedMode && savedMode !== this.currentValue) {
+            const url = new URL(window.location)
+            url.searchParams.set("view", savedMode)
+            Turbo.visit(url, { action: "replace" })
+        }
     }
 
-    setGrid() {
-        this.viewMode = "grid"
-        this.saveViewMode()
-        this.applyViewMode()
-    }
-
-    setList() {
-        this.viewMode = "list"
-        this.saveViewMode()
-        this.applyViewMode()
-    }
-
-    saveViewMode() {
-        localStorage.setItem("viewMode", this.viewMode)
-    }
-
-    applyViewMode() {
-        this.containerTarget.dataset.view = this.viewMode
-
-        if (this.viewMode === "grid") {
-            this.gridBtnTarget.classList.add("bg-purple-600", "text-white")
-            this.gridBtnTarget.classList.remove("text-slate-400")
-            this.listBtnTarget.classList.remove("bg-purple-600", "text-white")
-            this.listBtnTarget.classList.add("text-slate-400")
-        } else {
-            this.listBtnTarget.classList.add("bg-purple-600", "text-white")
-            this.listBtnTarget.classList.remove("text-slate-400")
-            this.gridBtnTarget.classList.remove("bg-purple-600", "text-white")
-            this.gridBtnTarget.classList.add("text-slate-400")
+    save(event) {
+        const mode = event.params.value
+        if (mode) {
+            localStorage.setItem("viewMode", mode)
         }
     }
 }

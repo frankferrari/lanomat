@@ -14,10 +14,8 @@
 
 ### Authorization
 - [ ] Use Pundit for authorization
-  - [ ] Host can do everything
+  - [ ] Host can do everything (settings, users management)
   - [ ] Player can vote and manage games
-- [ ] Change user type of session users
-- [ ] Delete session user
 
 ### Voting Settings
 - [ ] Users can vote x times for one game
