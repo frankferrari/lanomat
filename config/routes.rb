@@ -21,6 +21,9 @@ Rails.application.routes.draw do
     end
   end
 
+  # Settings
+  resource :settings, only: [ :show, :update ]
+
   # Games management
   resources :games, only: [ :index, :create, :destroy, :update ]
 
