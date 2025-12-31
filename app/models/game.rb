@@ -2,6 +2,7 @@ class Game < ApplicationRecord
   belongs_to :game_session
   has_many :game_tags, dependent: :destroy
   has_many :tags, through: :game_tags
+  has_many :votes, dependent: :destroy
 
   validates :name, presence: true
 

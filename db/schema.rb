@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_31_172303) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_31_221655) do
   create_table "game_sessions", force: :cascade do |t|
     t.string "code"
     t.datetime "created_at", null: false
@@ -32,7 +32,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_172303) do
     t.string "name", null: false
     t.string "price"
     t.integer "max_players"
-    t.integer "votes", default: 0, null: false
+    t.integer "votes_score", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "game_session_id", null: false
@@ -55,8 +55,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_172303) do
     t.index ["game_session_id"], name: "index_users_on_game_session_id"
   end
 
+  create_table "votes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "game_id", null: false
+    t.integer "weight", default: 1, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_votes_on_game_id"
+    t.index ["user_id", "game_id"], name: "index_votes_on_user_id_and_game_id", unique: true
+    t.index ["user_id"], name: "index_votes_on_user_id"
+  end
+
   add_foreign_key "game_tags", "games"
   add_foreign_key "game_tags", "tags"
   add_foreign_key "games", "game_sessions"
   add_foreign_key "users", "game_sessions"
+  add_foreign_key "votes", "games"
+  add_foreign_key "votes", "users"
 end

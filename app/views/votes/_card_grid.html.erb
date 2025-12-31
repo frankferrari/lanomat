@@ -1,5 +1,7 @@
 <%# Logic: Identify leading game for special highlighting %>
-<% is_leader = game_iteration.index == 0 && game.votes > 0 %>
+<% is_leader = local_assigns[:game_iteration]&.index == 0 && game.votes_score > 0 %>
+<%# Determine if user has voted for this game %>
+<% voted = local_assigns[:voted] || local_assigns[:voted_game_ids]&.include?(game.id) %>
 
 <div id="<%= dom_id game %>" class="relative group/card bg-slate-900 rounded-2xl border transition-all duration-300 p-5 flex flex-col justify-between <%= is_leader ? 'border-yellow-500/50 ring-1 ring-yellow-500/20 shadow-xl' : 'border-slate-800 hover:border-slate-700' %>">
   
@@ -46,14 +48,22 @@
 
     <%# Vote Controls %>
     <div class="flex flex-col items-center bg-slate-950 border border-slate-800 p-2 rounded-xl min-w-14">
-      <%= button_to vote_vote_path(game, direction: 'up'), method: :post, class: "p-1 hover:text-green-400 transition-colors group/up" do %>
-        <%= heroicon "chevron-up", variant: :outline, options: { class: "w-5 h-5 group-active/up:scale-90 transition-transform" } %>
+      <%= button_to vote_vote_path(game, direction: 'up', view: @view_mode || 'grid'), 
+          method: :post, 
+          class: "p-1 transition-colors group/up #{voted ? 'text-green-400' : 'text-slate-400 hover:text-green-400'}" do %>
+        <%= heroicon "chevron-up", variant: voted ? :solid : :outline, 
+            options: { class: "w-5 h-5 group-active/up:scale-90 transition-transform" } %>
       <% end %>
       
-      <span class="text-xl font-black text-white min-w-6 text-center"><%= game.votes %></span>
+      <span class="text-xl font-black min-w-6 text-center <%= voted ? 'text-green-400' : 'text-white' %>">
+        <%= game.votes_score %>
+      </span>
       
-      <%= button_to vote_vote_path(game, direction: 'down'), method: :post, class: "p-1 hover:text-red-400 transition-colors group/down" do %>
-        <%= heroicon "chevron-down", variant: :outline, options: { class: "w-5 h-5 group-active/down:scale-90 transition-transform" } %>
+      <%= button_to vote_vote_path(game, direction: 'down', view: @view_mode || 'grid'), 
+          method: :post, 
+          class: "p-1 text-slate-400 hover:text-red-400 transition-colors group/down" do %>
+        <%= heroicon "chevron-down", variant: :outline, 
+            options: { class: "w-5 h-5 group-active/down:scale-90 transition-transform" } %>
       <% end %>
     </div>
   </div>
