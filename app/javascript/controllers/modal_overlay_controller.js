@@ -12,18 +12,26 @@ export default class extends Controller {
 
     connect() {
         if (this.closeOnBackdropValue) {
-            this.modalTarget.addEventListener("click", this.handleBackdropClick.bind(this))
+            this.boundHandleBackdropClick = this.handleBackdropClick.bind(this)
+            this.modalTarget.addEventListener("click", this.boundHandleBackdropClick)
         }
         // Ensure ESC key works and syncs with our logic if needed
-        this.modalTarget.addEventListener("cancel", (event) => {
-            if (!this.closeOnBackdropValue) event.preventDefault()
-            else this.close()
-        })
+        this.modalTarget.addEventListener("cancel", this.handleCancel.bind(this))
     }
 
     disconnect() {
-        this.modalTarget.removeEventListener("click", this.handleBackdropClick.bind(this))
+        if (this.boundHandleBackdropClick) {
+            this.modalTarget.removeEventListener("click", this.boundHandleBackdropClick)
+        }
         this.unlockScroll()
+    }
+
+    handleCancel(event) {
+        if (!this.closeOnBackdropValue) {
+            event.preventDefault()
+        } else {
+            this.close()
+        }
     }
 
     open() {
