@@ -50,6 +50,6 @@
       <%= heroicon "plus", variant: :outline, options: { class: "w-5 h-5 text-white" } %>
     </button>
   </div>
-<% end %>
 
-<%= render "games/manage/tags", game: game %>
+  <%= render "games/manage/tags", game: game, f: form %>
+<% end %>

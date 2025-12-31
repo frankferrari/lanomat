@@ -3,7 +3,7 @@ class GamesController < ApplicationController
     @active_tab = params[:tab] || "vote"
 
     # Base query
-    scope = Game.order(votes: :desc, name: :asc)
+    scope = Game.includes(:tags).order(votes: :desc, name: :asc)
 
     # Filter by Genre if present
     if params[:genre].present? && params[:genre] != "All"
@@ -19,7 +19,7 @@ class GamesController < ApplicationController
     @game = Game.new(game_params)
     if @game.save
       respond_to do |format|
-        format.html { redirect_to root_path, notice: "Game added successfully." }
+        format.html { redirect_to root_path(tab: "manage"), notice: "Game added successfully." }
         format.turbo_stream { head :ok }
       end
     else
@@ -33,7 +33,7 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
     @game.destroy
     respond_to do |format|
-      format.html { redirect_to root_path, notice: "Game removed." }
+      format.html { redirect_to root_path(tab: "manage"), notice: "Game removed." }
       format.turbo_stream { head :ok }
     end
   end
@@ -42,7 +42,7 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
     if @game.update(game_params)
       respond_to do |format|
-        format.html { redirect_to root_path, notice: "Game updated." }
+        format.html { redirect_to root_path(tab: "manage"), notice: "Game updated." }
         format.turbo_stream { head :ok }
       end
     else
