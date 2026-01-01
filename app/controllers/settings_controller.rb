@@ -14,7 +14,7 @@ class SettingsController < ApplicationController
   private
 
   def settings_params
-    params.require(:game_session).permit(:bonus_votes, :votes_per_game, :punish_previous_game_tags, :previous_game_id, :previous_game_penalty, :enable_bonus_votes)
+    params.require(:game_session).permit(:bonus_votes, :votes_per_game, :punish_previous_game_tags, :previous_game_id, :previous_game_penalty, :enable_bonus_votes, :exclude_previous_game)
   end
 
   def ensure_host

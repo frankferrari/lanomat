@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_31_234714) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_01_000214) do
   create_table "game_sessions", force: :cascade do |t|
     t.string "code"
     t.datetime "created_at", null: false
@@ -20,6 +20,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_31_234714) do
     t.integer "previous_game_penalty", default: 2
     t.boolean "enable_bonus_votes", default: false
     t.boolean "punish_previous_game_tags", default: false
+    t.boolean "exclude_previous_game"
     t.index ["code"], name: "index_game_sessions_on_code", unique: true
     t.index ["previous_game_id"], name: "index_game_sessions_on_previous_game_id"
   end

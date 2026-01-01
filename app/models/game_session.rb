@@ -19,6 +19,7 @@ class GameSession < ApplicationRecord
     self.previous_game_penalty ||= 2
     self.enable_bonus_votes = true if enable_bonus_votes.nil?
     self.punish_previous_game_tags = true if punish_previous_game_tags.nil?
+    self.exclude_previous_game = false if exclude_previous_game.nil?
   end
 
   def generate_code

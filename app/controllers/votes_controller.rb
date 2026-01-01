@@ -6,6 +6,10 @@ class VotesController < ApplicationController
       scope = scope.joins(:tags).where(tags: { name: params[:tag] })
     end
 
+    if Current.game_session.exclude_previous_game? && Current.game_session.previous_game_id.present?
+      scope = scope.where.not(id: Current.game_session.previous_game_id)
+    end
+
     @games = scope
     @view_mode = params[:view].presence_in(%w[grid list]) || "grid"
     @voted_game_ids = current_user.votes.where(game: @games).pluck(:game_id).to_set
