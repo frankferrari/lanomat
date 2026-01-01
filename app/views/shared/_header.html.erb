@@ -1,5 +1,5 @@
 <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <div class="max-w-6xl mx-auto px-3 h-14 flex items-center justify-between">
         <div class="flex items-center gap-2">
             <div class="bg-purple-600 p-2 rounded-lg shadow-lg">
                 <%= heroicon "trophy", variant: :outline, options: { class: "w-5 h-5 text-white" } %>
@@ -25,14 +25,6 @@
         <div class="flex items-center gap-4">
             <% if policy(Current.game_session).update? %>
             <div class="p-1 flex gap-1">
-                <!-- Players Modal -->
-                <div data-controller="modal-overlay">
-                    <button data-action="modal-overlay#open" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-700" title="Players">
-                        <%= heroicon "users", variant: :outline, options: { class: "w-4 h-4" } %>
-                        <span class="hidden sm:inline">Players</span>
-                    </button>
-                    <%= render "shared/players_modal" %>
-                </div>
                 <!-- Settings Modal -->
                 <div data-controller="modal-overlay">
                     <button data-action="modal-overlay#open" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-700" title="Settings">
@@ -41,6 +33,15 @@
                     </button>
                     <%= render "shared/settings_modal" %>
                 </div>
+                <!-- Players Modal -->
+                <div data-controller="modal-overlay">
+                    <button data-action="modal-overlay#open" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-700" title="Players">
+                        <%= heroicon "users", variant: :outline, options: { class: "w-4 h-4" } %>
+                        <span class="hidden sm:inline">Players</span>
+                    </button>
+                    <%= render "shared/players_modal" %>
+                </div>
+
             </div>
             <% end %>
             <div class="flex items-center gap-4">

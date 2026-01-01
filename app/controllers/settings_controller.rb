@@ -5,9 +5,16 @@ class SettingsController < ApplicationController
     if Current.game_session.update(settings_params)
       # Recalculate scores for all games as settings might have changed penalties or bonuses
       Current.game_session.games.find_each(&:update_score!)
-      redirect_to votes_path(view: params[:view]), notice: "Settings updated successfully."
+
+      respond_to do |format|
+        format.turbo_stream { head :ok }
+        format.html { redirect_to votes_path(view: params[:view]), notice: "Settings updated successfully." }
+      end
     else
-      redirect_to votes_path(view: params[:view]), alert: "Failed to update settings."
+      respond_to do |format|
+        format.turbo_stream { head :unprocessable_entity }
+        format.html { redirect_to votes_path(view: params[:view]), alert: "Failed to update settings." }
+      end
     end
   end
 
