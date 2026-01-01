@@ -1,0 +1,57 @@
+<% 
+  settings = [
+    {
+      title: "Bonus Votes Pool",
+      value: "#{Current.game_session.bonus_votes} (Total)",
+      description: "A global pool of #{Current.game_session.bonus_votes} bonus votes is available for all users to distribute.",
+      icon: "gift",
+      enabled: Current.game_session.enable_bonus_votes
+    },
+    {
+      title: "Punish Previous Game Tags",
+      value: "Active (-#{Current.game_session.previous_game_penalty} pts)",
+      description: "Votes for games with tags matching the previous game are penalized by #{Current.game_session.previous_game_penalty} points.",
+      icon: "shield-exclamation",
+      enabled: Current.game_session.punish_previous_game_tags
+    },
+    {
+      title: "Countdown",
+      value: "#{Current.game_session.voting_countdown_duration_minutes} min",
+      description: "Voting session has a timer and will end automatically after the time expires.",
+      icon: "clock",
+      enabled: Current.game_session.voting_countdown_enabled
+    }
+  ].select { |s| s[:enabled] }
+%>
+
+<% if settings.any? %>
+<div class="<%= local_assigns[:vertical] ? 'flex flex-col gap-4' : 'flex flex-wrap items-center justify-center gap-6 mb-10 mt-2' %>">
+  <% settings.each do |setting| %>
+    <div class="relative group aspect-[3/4] max-w-[200px] w-full">
+      <!-- Glow effect (Side-glow style from image) -->
+      <div class="absolute -inset-0.5 bg-gradient-to-b from-purple-600 via-pink-600 to-purple-600 rounded-[1.8rem] blur-lg opacity-30 group-hover:opacity-60 transition duration-500"></div>
+      
+      <div class="relative h-full flex flex-col items-center justify-center p-5 bg-[#0f111a] border border-white/10 rounded-[1.8rem] text-center overflow-hidden shadow-2xl">
+        <!-- Floating Icon with Glow -->
+        <div class="mb-4 relative">
+            <div class="absolute inset-0 bg-purple-500 blur-xl opacity-30"></div>
+            <div class="relative text-white">
+                <%= heroicon setting[:icon], variant: :solid, options: { class: "w-10 h-10 drop-shadow-[0_0_10px_rgba(168,85,247,0.7)]" } %>
+            </div>
+        </div>
+        
+        <h3 class="text-base font-bold text-white mb-1 tracking-tight"><%= setting[:title] %></h3>
+        <p class="text-xs font-bold text-purple-400 mb-3 uppercase tracking-widest">
+          <%= setting[:value] %>
+        </p>
+        <p class="text-[10px] text-slate-400 leading-tight font-medium px-1">
+          <%= setting[:description] %>
+        </p>
+
+        <!-- Bottom Accent Glow -->
+        <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-purple-600/10 to-transparent pointer-events-none"></div>
+      </div>
+    </div>
+  <% end %>
+</div>
+<% end %>

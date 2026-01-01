@@ -17,6 +17,15 @@ class VotesController < ApplicationController
 
   def vote
     @game = Current.game_session.games.find(params[:id])
+
+    if Current.game_session.voting_closed?
+      respond_to do |format|
+        format.html { redirect_to votes_path, alert: "Voting is closed!" }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash", locals: { alert: "Voting is closed!" }) }
+      end
+      return
+    end
+
     direction = params[:direction]
 
     existing_vote = current_user.votes.find_by(game: @game)

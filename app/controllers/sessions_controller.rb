@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
 
   def new
     if current_user
-      redirect_to games_path
+      redirect_to votes_path
     end
     @tab = params[:tab] == "host" ? "host" : "join"
   end
@@ -15,7 +15,7 @@ class SessionsController < ApplicationController
       @user = @session.users.new(name: params[:name], role: :host)
       if @user.save
         login(@user)
-        redirect_to games_path, notice: "Session hosted successfully! Code: #{@session.code}"
+        redirect_to votes_path, notice: "Session hosted successfully! Code: #{@session.code}"
       else
         @session.destroy
         flash.now[:alert] = "Could not create user: #{@user.errors.full_messages.join(', ')}"
@@ -40,13 +40,13 @@ class SessionsController < ApplicationController
       if @user
         # Existing user logic
         login(@user)
-        redirect_to games_path, notice: "Rejoined session as #{@user.name}."
+        redirect_to votes_path, notice: "Rejoined session as #{@user.name}."
       else
         # New user logic
         @user = @session.users.new(name: name, role: :player)
         if @user.save
           login(@user)
-          redirect_to games_path, notice: "Joined session successfully!"
+          redirect_to votes_path, notice: "Joined session successfully!"
         else
           flash.now[:alert] = "Could not join session: #{@user.errors.full_messages.join(', ')}"
           @tab = "join"

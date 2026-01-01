@@ -1,0 +1,43 @@
+<div id="countdown_badge">
+  <% if game_session.voting_countdown_enabled? %>
+    <div class="p-4 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4"
+         data-controller="countdown"
+         data-countdown-seconds-value="<%= game_session.seconds_remaining %>"
+         data-countdown-active-value="<%= game_session.countdown_active? %>">
+      
+      <div class="flex items-center gap-3">
+        <div class="p-2 <%= game_session.countdown_paused? ? 'bg-amber-500/10 text-amber-500' : 'bg-pink-500/10 text-pink-400' %> rounded-xl shrink-0">
+          <%= heroicon(game_session.countdown_paused? ? "pause" : "clock", variant: :outline, options: { class: "w-5 h-5" }) %>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-tight">
+            <%= game_session.countdown_paused? ? "Paused" : "Time Remaining" %>
+          </span>
+          <span data-countdown-target="timer" class="text-xl font-black font-mono text-white tabular-nums tracking-tight">
+            <%= Time.at(game_session.seconds_remaining).utc.strftime("%M:%S") %>
+          </span>
+        </div>
+      </div>
+
+      <% if Current.user.host? %>
+        <div class="flex items-center gap-2">
+          <% if game_session.countdown_active? %>
+            <%= button_to pause_countdown_path, method: :post, class: "p-2 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white rounded-xl transition-colors group", title: "Pause", form: { class: "inline" } do %>
+               <%= heroicon "pause", variant: :outline, options: { class: "w-5 h-5" } %>
+            <% end %>
+          <% else %>
+            <%= button_to countdown_path, method: :post, class: "px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white text-sm font-bold rounded-xl shadow-lg shadow-purple-500/20 transition-all transform hover:scale-105 active:scale-95" do %>
+              <%= game_session.countdown_paused? ? "Resume" : "Start Countdown" %>
+            <% end %>
+          <% end %>
+
+          <% if game_session.countdown_active? || game_session.countdown_paused? %>
+            <%= button_to countdown_path, method: :delete, class: "p-2 bg-slate-800 hover:bg-red-900/40 text-slate-400 hover:text-red-400 rounded-xl transition-colors group", title: "Stop and Reset", form: { class: "inline" } do %>
+               <%= heroicon "stop", variant: :outline, options: { class: "w-5 h-5" } %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

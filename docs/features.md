@@ -20,8 +20,8 @@
 ### Voting Settings
 - [X] Users can apply more than one vote, as bonus votes from the bonus pool
 - [x] When setting "previous game", all other games of different genre get x votes
-- [ ] Block "previous game" (previous game is not allowed)
-- [ ] Set voting countdown time (countdown voting is allowed)
+- [x] Block "previous game" (previous game is not allowed)
+- [x] Set voting countdown time (countdown voting is allowed)
 - [ ] Enable "Wheel of Fortune" after voting ended
   - [ ] Set games included (top 3, top 5, all games)
   - [ ] Set proportional representation (a part for each vote)
@@ -38,3 +38,4 @@
 - [x] Add gradient background color transformation depending on votes
 - [ ] Instant dynamic update of the voting results
 - [ ] Allow downvotes
+- [ ] Reset Voting button for host

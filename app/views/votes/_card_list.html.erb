@@ -20,7 +20,7 @@
       <% if game.tags.any? %>
         <div class="flex flex-wrap gap-1">
           <% game.tags.each do |tag| %>
-            <span class="text-xs text-purple-300 font-bold bg-purple-600/20 border border-purple-500/30 px-2 py-0.5 rounded-md uppercase tracking-wider"><%= tag.name %></span>
+            <span class="text-[10px] text-slate-400 font-semibold bg-slate-950/50 border border-slate-800 px-2 py-0.5 rounded-md uppercase tracking-wider"><%= tag.name %></span>
           <% end %>
         </div>
       <% end %>

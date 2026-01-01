@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_01_000214) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_01_003107) do
   create_table "game_sessions", force: :cascade do |t|
     t.string "code"
     t.datetime "created_at", null: false
@@ -21,6 +21,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_01_000214) do
     t.boolean "enable_bonus_votes", default: false
     t.boolean "punish_previous_game_tags", default: false
     t.boolean "exclude_previous_game"
+    t.boolean "voting_countdown_enabled"
+    t.integer "voting_countdown_duration_minutes"
+    t.datetime "voting_countdown_started_at"
+    t.datetime "voting_countdown_ends_at"
+    t.integer "voting_countdown_paused_seconds"
     t.index ["code"], name: "index_game_sessions_on_code", unique: true
     t.index ["previous_game_id"], name: "index_game_sessions_on_previous_game_id"
   end

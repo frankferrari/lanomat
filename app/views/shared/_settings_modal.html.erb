@@ -79,24 +79,24 @@
               </div>
 
               <!-- Voting Countdown -->
-              <div class="p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 opacity-50">
+              <div class="p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50" data-controller="toggle">
                 <div class="flex items-center justify-between">
                   <div>
                     <label class="block text-sm font-semibold text-white">Time-Limited Voting</label>
                     <p class="text-xs text-slate-400">Enable countdown timer</p>
                   </div>
-                  <div class="relative inline-flex items-center cursor-not-allowed">
-                    <input type="checkbox" disabled class="sr-only peer">
-                    <div class="w-11 h-6 bg-slate-700 rounded-full peer-checked:bg-purple-600"></div>
-                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <%= f.check_box :voting_countdown_enabled, class: "sr-only peer", data: { toggle_target: "input", action: "change->toggle#toggle" } %>
+                    <div class="w-11 h-6 bg-slate-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                  </label>
                 </div>
                 
-                <div class="hidden mt-4 pt-4 border-t border-slate-700/50">
+                <div class="hidden mt-4 pt-4 border-t border-slate-700/50" data-toggle-target="content">
                   <div class="flex items-center justify-between">
                     <span class="text-xs font-medium text-slate-400">Duration</span>
                     <div class="flex items-center gap-2">
-                      <input type="number" disabled value="60" class="w-20 bg-slate-950 border-slate-700 text-white rounded-xl text-center font-bold cursor-not-allowed">
-                      <span class="text-xs text-slate-500 font-bold uppercase">sec</span>
+                      <%= f.number_field :voting_countdown_duration_minutes, class: "w-20 bg-slate-950 border-slate-700 text-white rounded-xl focus:ring-purple-500 focus:border-purple-500 text-center font-bold", data: { toggle_default: 5 } %>
+                      <span class="text-xs text-slate-500 font-bold uppercase">min</span>
                     </div>
                   </div>
                 </div>
