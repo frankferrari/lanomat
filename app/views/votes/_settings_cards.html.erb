@@ -2,14 +2,14 @@
   settings = [
     {
       title: "Bonus Votes Pool",
-      value: "+#{Current.game_session.bonus_votes} Bonus Vote(s)",
+      value: "+#{Current.game_session.bonus_votes} pts",
       description: "A global pool of #{Current.game_session.bonus_votes} bonus votes is available for all users to distribute.",
       icon: "gift",
       enabled: Current.game_session.enable_bonus_votes
     },
     {
       title: "Punish Previous Game Tags",
-      value: "-#{Current.game_session.previous_game_penalty} Point(s)",
+      value: "-#{Current.game_session.previous_game_penalty} pts",
       description: "Votes for games with tags matching the previous game are penalized by #{Current.game_session.previous_game_penalty} points.",
       icon: "shield-exclamation",
       enabled: Current.game_session.punish_previous_game_tags
@@ -22,10 +22,13 @@
       enabled: Current.game_session.voting_countdown_enabled
     }
   ].select { |s| s[:enabled] }
+  
+  is_vertical = local_assigns[:vertical]
 %>
 
+<div id="settings_cards_<%= is_vertical ? 'vertical' : 'grid' %>">
 <% if settings.any? || Current.game_session.wheel_enabled %>
-<div class="<%= local_assigns[:vertical] ? 'flex flex-col gap-4' : 'flex flex-wrap items-center justify-center gap-6 mb-10 mt-2' %>">
+<div class="<%= is_vertical ? 'flex flex-col gap-4' : 'flex flex-wrap items-center justify-center gap-6 mb-10 mt-2' %>">
   <% settings.each do |setting| %>
     <div class="relative group aspect-[3/4] max-w-[200px] w-full">
       <!-- Glow effect (Side-glow style from image) -->
@@ -41,7 +44,7 @@
         </div>
         
         <h3 class="text-base font-bold text-white mb-1 tracking-tight"><%= setting[:title] %></h3>
-        <p class="text-xs font-bold text-purple-400 mb-3 uppercase tracking-widest">
+        <p class="text-lg font-black text-purple-400 mb-3 uppercase tracking-widest">
           <%= setting[:value] %>
         </p>
         <p class="text-[10px] text-slate-400 leading-tight font-medium px-1">
@@ -77,7 +80,7 @@
     %>
     <div class="relative group aspect-[3/4] max-w-[200px] w-full">
       <!-- Rainbow Glow effect - Animated -->
-      <div class="absolute -inset-0.5 bg-gradient-to-br from-rose-500 via-amber-400 via-30% via-emerald-400 via-50% via-cyan-400 via-70% to-violet-500 rounded-[1.8rem] blur-lg opacity-40 group-hover:opacity-70 transition duration-500 animate-[spin_8s_linear_infinite]"></div>
+      <div class="absolute -inset-0.5 bg-gradient-to-br from-rose-500 via-amber-400 via-30% via-emerald-400 via-50% via-cyan-400 via-70% to-violet-500 rounded-[1.8rem] blur-lg opacity-40 group-hover:opacity-70 transition duration-500"></div>
       
       <div class="relative h-full flex flex-col items-center justify-center p-5 bg-[#0f111a] border border-white/20 rounded-[1.8rem] text-center overflow-hidden shadow-2xl">
         <!-- Rainbow Top Border Accent -->
@@ -104,12 +107,13 @@
         </div>
         
         <h3 class="text-base font-bold bg-gradient-to-r from-rose-300 via-amber-200 to-emerald-300 bg-clip-text text-transparent mb-1 tracking-tight">Wheel of Fortune</h3>
-        <p class="text-xs font-bold bg-gradient-to-r from-amber-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent mb-3 uppercase tracking-widest">
+        <p class="text-lg font-black bg-gradient-to-r from-amber-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent mb-3 uppercase tracking-widest">
           <%= wheel_mode_label %>
         </p>
         <p class="text-[10px] text-slate-400 leading-tight font-medium px-1">
           <%= wheel_description %>
         </p>
+
 
         <!-- Rainbow Bottom Accent Glow -->
         <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-500/10 via-emerald-500/5 to-transparent pointer-events-none"></div>
@@ -118,3 +122,4 @@
   <% end %>
 </div>
 <% end %>
+</div>

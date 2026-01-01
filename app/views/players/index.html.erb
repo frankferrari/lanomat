@@ -1,0 +1,21 @@
+<div class="min-h-screen bg-slate-950 text-white p-4">
+  <div class="max-w-2xl mx-auto">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden">
+      <div class="p-8">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h2 class="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">Players</h2>
+            <p class="text-slate-400 mt-1">Manage session participants.</p>
+          </div>
+          <%= link_to root_path, class: "p-2 text-slate-400 hover:text-white transition-colors cursor-pointer rounded-xl hover:bg-slate-800" do %>
+            <%= heroicon "x-mark", variant: :outline, options: { class: "w-6 h-6" } %>
+          <% end %>
+        </div>
+
+        <div class="space-y-2">
+          <%= render partial: "players/player_row", collection: @users, as: :user %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

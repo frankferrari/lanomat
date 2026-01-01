@@ -92,6 +92,12 @@ class GameSession < ApplicationRecord
     broadcast_replace_to "games", target: "countdown_badge", partial: "votes/countdown_badge", locals: { game_session: self }
   end
 
+  def broadcast_settings_update
+    # Broadcast to both grid and list view targets
+    broadcast_replace_to "games", target: "settings_cards_grid", partial: "votes/settings_cards", locals: { vertical: false }
+    broadcast_replace_to "games", target: "settings_cards_vertical", partial: "votes/settings_cards", locals: { vertical: true }
+  end
+
   # Wheel of Fortune methods
   def eligible_wheel_games
     scope = games.order(votes_score: :desc, name: :asc)

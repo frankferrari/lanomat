@@ -6,6 +6,9 @@ class SettingsController < ApplicationController
       # Recalculate scores for all games as settings might have changed penalties or bonuses
       Current.game_session.games.find_each(&:update_score!)
 
+      # Broadcast settings cards update to all connected clients
+      Current.game_session.broadcast_settings_update
+
       respond_to do |format|
         format.turbo_stream { head :ok }
         format.html { redirect_to votes_path(view: params[:view]), notice: "Settings updated successfully." }
