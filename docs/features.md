@@ -37,5 +37,5 @@
 ### Nice to Have
 - [x] Add gradient background color transformation depending on votes
 - [x] Instant dynamic update of the voting results
-- [ ] Allow downvotes
+- [x] Allow negative votes
 - [ ] Reset Voting button for host

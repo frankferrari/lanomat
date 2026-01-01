@@ -21,19 +21,32 @@
                       <%= render "bonus_counter" %>
                 </div>
 
-                <div class="flex items-center bg-slate-900 border border-slate-800 rounded-lg p-1">
-                    <%= link_to votes_path(view: "grid", tag: params[:tag]), 
-                        class: "p-1 px-2 rounded-md transition-colors #{@view_mode == 'grid' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'}",
-                        title: "Grid View",
-                        data: { turbo_action: "replace", action: "click->view-mode#save", view_mode_value_param: "grid" } do %>
-                        <%= heroicon "squares-2x2", variant: :outline, options: { class: "w-5 h-5" } %>
+                <div class="flex items-center gap-2">
+                    <% if current_user.host? %>
+                        <%= button_to reset_votes_path, 
+                            method: :post,
+                            class: "flex items-center gap-1.5 px-3 py-1.5 bg-red-600/20 border border-red-500/50 text-red-400 hover:bg-red-600/40 hover:text-red-300 rounded-lg text-sm font-medium transition-all",
+                            title: "Reset All Votes",
+                            data: { turbo_confirm: "Are you sure you want to reset all votes? This cannot be undone." } do %>
+                            <%= heroicon "arrow-path", variant: :outline, options: { class: "w-4 h-4" } %>
+                            <span>Reset Votes</span>
+                        <% end %>
                     <% end %>
-                    <%= link_to votes_path(view: "list", tag: params[:tag]), 
-                        class: "p-1 px-2 rounded-md transition-colors #{@view_mode == 'list' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'}",
-                        title: "List View",
-                        data: { turbo_action: "replace", action: "click->view-mode#save", view_mode_value_param: "list" } do %>
-                        <%= heroicon "bars-3", variant: :outline, options: { class: "w-5 h-5" } %>
-                    <% end %>
+
+                    <div class="flex items-center bg-slate-900 border border-slate-800 rounded-lg p-1">
+                        <%= link_to votes_path(view: "grid", tag: params[:tag]), 
+                            class: "p-1 px-2 rounded-md transition-colors #{@view_mode == 'grid' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'}",
+                            title: "Grid View",
+                            data: { turbo_action: "replace", action: "click->view-mode#save", view_mode_value_param: "grid" } do %>
+                            <%= heroicon "squares-2x2", variant: :outline, options: { class: "w-5 h-5" } %>
+                        <% end %>
+                        <%= link_to votes_path(view: "list", tag: params[:tag]), 
+                            class: "p-1 px-2 rounded-md transition-colors #{@view_mode == 'list' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'}",
+                            title: "List View",
+                            data: { turbo_action: "replace", action: "click->view-mode#save", view_mode_value_param: "list" } do %>
+                            <%= heroicon "bars-3", variant: :outline, options: { class: "w-5 h-5" } %>
+                        <% end %>
+                    </div>
                 </div>
             </div>
 
