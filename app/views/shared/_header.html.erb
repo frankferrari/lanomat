@@ -7,7 +7,7 @@
             <h1 class="font-bold text-xl tracking-tight hidden sm:block">LAN-O-MAT</h1>
         </div>
 
-        <nav class="flex items-center gap-2">
+        <nav class="flex justify-between items-center gap-2">
             <div class="flex bg-slate-800/50 p-1 rounded-xl border border-slate-700">
                 <%= link_to votes_path, class: "px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 #{current_page?(votes_path) ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'}" do %>
                     <%= heroicon "bolt", variant: :outline, options: { class: "w-4 h-4" } %>
@@ -18,36 +18,42 @@
                     <span class="hidden sm:inline">Games</span>
                 <% end %>
             </div>
+        </nav>
 
+
+
+        <div class="flex items-center gap-4">
             <% if policy(Current.game_session).update? %>
-                <div data-controller="modal-overlay" class="p-1 bg-slate-800/50 rounded-xl border border-slate-700 flex">
+            <div class="p-1 flex gap-1">
+                <!-- Players Modal -->
+                <div data-controller="modal-overlay">
+                    <button data-action="modal-overlay#open" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-700" title="Players">
+                        <%= heroicon "users", variant: :outline, options: { class: "w-4 h-4" } %>
+                        <span class="hidden sm:inline">Players</span>
+                    </button>
+                    <%= render "shared/players_modal" %>
+                </div>
+                <!-- Settings Modal -->
+                <div data-controller="modal-overlay">
                     <button data-action="modal-overlay#open" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-700" title="Settings">
                         <%= heroicon "adjustments-horizontal", variant: :outline, options: { class: "w-4 h-4" } %>
                         <span class="hidden sm:inline">Settings</span>
                     </button>
-
-                    <!-- Settings Modal Dialog -->
                     <%= render "shared/settings_modal" %>
                 </div>
+            </div>
             <% end %>
-        </nav>
-
-        <div class="flex items-center gap-4">
-            <% if current_user %>
-                <div class="hidden md:flex flex-col items-end mr-2">
-                    <span class="text-xs text-slate-400 font-mono">CODE: <span class="text-white font-bold selection:bg-purple-500"><%= current_user.game_session.code %></span></span>
-                    <div class="flex items-center gap-2">
-                         <span class="text-sm font-medium text-white"><%= current_user.name %></span>
-                         <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-700 text-slate-300 uppercase"><%= current_user.role %></span>
+            <div class="flex items-center gap-4">
+                <% if current_user %>
+                    <div class="hidden md:flex flex-col gap-1 items-end mr-2">
+                        <span class="text-xs text-slate-400 font-mono">CODE: <span class="text-white font-bold selection:bg-purple-500"><%= current_user.game_session.code %></span></span>
+                        <span class="text-sm font-medium text-white"><%= current_user.name %></span>
                     </div>
-                </div>
-
-
-
-                <%= button_to session_path, method: :delete, class: "p-2 text-slate-400 hover:text-white transition-colors", title: "Logout" do %>
-                    <%= heroicon "arrow-right-on-rectangle", variant: :outline, options: { class: "w-5 h-5" } %>
+                    <%= button_to session_path, method: :delete, class: "p-2 text-slate-400 hover:text-white transition-colors", title: "Logout" do %>
+                        <%= heroicon "arrow-right-on-rectangle", variant: :outline, options: { class: "w-5 h-5" } %>
+                    <% end %>
                 <% end %>
-            <% end %>
+            </div>
         </div>
     </div>
 </header>

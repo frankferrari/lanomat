@@ -24,6 +24,14 @@ Rails.application.routes.draw do
   # Settings
   resource :settings, only: [ :update ]
 
+  # Players management
+  resources :players, only: [ :index, :update, :destroy ] do
+    member do
+      patch :promote
+      patch :demote
+    end
+  end
+
   resource :countdown, only: [ :create, :destroy ] do
     post :pause, on: :member
   end

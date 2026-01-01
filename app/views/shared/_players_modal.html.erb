@@ -1,0 +1,73 @@
+<dialog data-modal-overlay-target="modal" class="m-auto fixed inset-0 backdrop:bg-slate-950/80 backdrop:backdrop-blur-md bg-transparent p-0 overflow-visible max-w-xl w-[calc(100%-2rem)] outline-none open:animate-in open:fade-in open:zoom-in open:duration-200">
+  <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden">
+    <div class="p-8">
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h2 class="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">Players</h2>
+          <p class="text-slate-400 mt-1">Manage session participants.</p>
+        </div>
+        <button type="button" data-action="modal-overlay#close" class="p-2 text-slate-400 hover:text-white transition-colors cursor-pointer rounded-xl hover:bg-slate-800">
+          <%= heroicon "x-mark", variant: :outline, options: { class: "w-6 h-6" } %>
+        </button>
+      </div>
+
+      <div class="space-y-3 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+        <% Current.game_session.users.order(:created_at).each do |user| %>
+          <%= turbo_frame_tag dom_id(user) do %>
+            <div class="p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 flex items-center justify-between gap-4 group hover:bg-slate-800/70 transition-colors">
+              <div class="flex items-center gap-3 flex-1 min-w-0">
+                <!-- Avatar -->
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br <%= user.host? ? 'from-amber-500 to-orange-600' : 'from-slate-600 to-slate-700' %> flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <span class="text-white font-bold text-sm"><%= user.name.first.upcase %></span>
+                </div>
+        
+                <!-- Name & Role -->
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-2">
+                    <span class="font-semibold text-white truncate"><%= user.name %></span>
+                    <% if user == current_user %>
+                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 uppercase font-bold">You</span>
+                    <% end %>
+                    </div>
+                    <div class="flex items-center gap-2 mt-0.5">
+                    <% if user.host? %>
+                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 uppercase font-bold flex items-center gap-1">
+                        <%= heroicon "star", variant: :mini, options: { class: "w-3 h-3" } %>
+                        Host
+                        </span>
+                    <% else %>
+                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-600/50 text-slate-400 uppercase font-bold">Player</span>
+                    <% end %>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Actions -->
+                <% if user != current_user %>
+                <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <% if user.player? %>
+                    <%= button_to promote_player_path(user), method: :patch, class: "p-2 text-amber-400 hover:text-amber-300 hover:bg-amber-500/10 rounded-xl transition-all cursor-pointer", title: "Make Host", form: { data: { turbo_frame: dom_id(user) } } do %>
+                        <%= heroicon "star", variant: :outline, options: { class: "w-5 h-5" } %>
+                    <% end %>
+                    <% else %>
+                    <% if Current.game_session.users.host.count > 1 %>
+                        <%= button_to demote_player_path(user), method: :patch, class: "p-2 text-slate-400 hover:text-slate-300 hover:bg-slate-600/50 rounded-xl transition-all cursor-pointer", title: "Demote to Player", form: { data: { turbo_frame: dom_id(user) } } do %>
+                        <%= heroicon "arrow-down-circle", variant: :outline, options: { class: "w-5 h-5" } %>
+                        <% end %>
+                    <% end %>
+                    <% end %>
+
+                    <%= button_to player_path(user), method: :delete, class: "p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-all cursor-pointer", title: "Remove Player", form: { data: { turbo_confirm: "Remove #{user.name} from this session?", turbo_frame: dom_id(user) } } do %>
+                    <%= heroicon "trash", variant: :outline, options: { class: "w-5 h-5" } %>
+                    <% end %>
+                </div>
+                <% end %>
+            </div>
+            <% end %>
+
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</dialog>

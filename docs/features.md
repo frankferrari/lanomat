@@ -13,9 +13,9 @@
     - [x] If name already exists, join/become as this user
 
 ### Authorization
-- [ ] Use Pundit for authorization
-  - [ ] Host can do everything (settings, users management)
-  - [ ] Player can vote and manage games
+- [x] Use Pundit for authorization
+  - [x] Host can do everything (settings, users management)
+  - [x] Player can vote and manage games
 
 ### Voting Settings
 - [X] Users can apply more than one vote, as bonus votes from the bonus pool
