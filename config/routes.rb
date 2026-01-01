@@ -36,6 +36,11 @@ Rails.application.routes.draw do
     post :pause, on: :member
   end
 
+  resource :wheel, only: [] do
+    post :spin, on: :collection
+    delete :dismiss, on: :collection
+  end
+
   # Games management
   resources :games, only: [ :index, :create, :destroy, :update ]
 

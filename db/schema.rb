@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_01_003107) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_01_202600) do
   create_table "game_sessions", force: :cascade do |t|
     t.string "code"
     t.datetime "created_at", null: false
@@ -26,6 +26,14 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_01_003107) do
     t.datetime "voting_countdown_started_at"
     t.datetime "voting_countdown_ends_at"
     t.integer "voting_countdown_paused_seconds"
+    t.boolean "wheel_enabled", default: false
+    t.string "wheel_filter_mode", default: "top_x"
+    t.integer "wheel_filter_top_count", default: 5
+    t.boolean "wheel_proportional", default: false
+    t.string "wheel_spin_id"
+    t.datetime "wheel_start_at"
+    t.integer "wheel_winner_id"
+    t.boolean "wheel_active", default: false
     t.index ["code"], name: "index_game_sessions_on_code", unique: true
     t.index ["previous_game_id"], name: "index_game_sessions_on_previous_game_id"
   end
@@ -79,6 +87,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_01_003107) do
   end
 
   add_foreign_key "game_sessions", "games", column: "previous_game_id"
+  add_foreign_key "game_sessions", "games", column: "wheel_winner_id"
   add_foreign_key "game_tags", "games"
   add_foreign_key "game_tags", "tags"
   add_foreign_key "games", "game_sessions"

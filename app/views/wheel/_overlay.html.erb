@@ -1,0 +1,62 @@
+<div id="wheel_container">
+  <div class="fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-md flex items-center justify-center"
+       data-controller="wheel"
+       data-wheel-games-value="<%= games.to_json %>"
+       data-wheel-proportional-value="<%= proportional %>"
+       data-wheel-start-at-value="<%= start_at&.iso8601(3) %>"
+       data-wheel-winner-id-value="<%= winner_id %>"
+       data-wheel-spin-id-value="<%= spin_id %>">
+    
+    <div class="relative flex flex-col items-center gap-8">
+      <!-- Countdown Overlay -->
+      <div data-wheel-target="countdown" class="absolute inset-0 flex items-center justify-center z-30 bg-slate-950/80 backdrop-blur-sm rounded-3xl">
+        <div class="text-center">
+          <p class="text-purple-400 text-sm font-bold uppercase tracking-widest mb-2">Get Ready!</p>
+          <span data-wheel-target="countdownNumber" class="text-9xl font-black text-white tabular-nums animate-pulse">5</span>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <div class="text-center space-y-2">
+        <h2 class="text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">
+          THE DECIDER
+        </h2>
+        <p class="text-slate-400 text-sm">Let fate choose your game!</p>
+      </div>
+
+      <!-- Wheel Container -->
+      <div class="relative">
+        <!-- Pointer -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 -mt-4 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[30px] border-t-white z-10 filter drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]"></div>
+        
+        <!-- Wheel -->
+        <div class="p-4 rounded-full bg-slate-900 border-8 border-slate-800 shadow-2xl">
+          <canvas data-wheel-target="canvas" width="450" height="450" class="max-w-[85vw] sm:max-w-md h-auto rounded-full"></canvas>
+        </div>
+      </div>
+
+      <!-- Winner Announcement (hidden initially) -->
+      <div data-wheel-target="winner" class="hidden absolute inset-0 flex items-center justify-center z-40">
+        <div class="bg-slate-900 p-8 rounded-3xl border-2 border-green-500 shadow-2xl text-center max-w-sm w-full">
+          <p class="text-green-400 text-[10px] font-black uppercase tracking-widest mb-2">Winner!</p>
+          <h3 data-wheel-target="winnerName" class="text-4xl font-black mb-6"></h3>
+          
+          <% if Current.user&.host? %>
+            <%= button_to dismiss_wheel_path, method: :delete, class: "w-full py-4 bg-green-600 hover:bg-green-500 text-white font-black rounded-xl transition-all shadow-lg active:scale-95 uppercase tracking-widest cursor-pointer" do %>
+              Ready to Play!
+            <% end %>
+          <% else %>
+            <p class="text-slate-400 text-sm">Waiting for host to continue...</p>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Cancel button for host -->
+      <% if Current.user&.host? %>
+        <%= button_to dismiss_wheel_path, method: :delete, class: "absolute top-4 right-4 p-2 text-slate-400 hover:text-white bg-slate-800/50 rounded-xl border border-slate-700 transition-colors cursor-pointer", title: "Cancel" do %>
+          <%= heroicon "x-mark", variant: :outline, options: { class: "w-5 h-5" } %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

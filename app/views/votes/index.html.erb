@@ -1,5 +1,14 @@
 <%= turbo_stream_from "games" %>
 
+<%# Wheel of Fortune overlay container - broadcasts will replace this %>
+<%= render Current.game_session.wheel_active? ? "wheel/overlay" : "wheel/empty",
+    game_session: Current.game_session,
+    games: Current.game_session.wheel_games_data,
+    proportional: Current.game_session.wheel_proportional?,
+    start_at: Current.game_session.wheel_start_at,
+    winner_id: Current.game_session.wheel_winner_id,
+    spin_id: Current.game_session.wheel_spin_id %>
+
 <div class="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-purple-500/30 pb-20">
     <%= render "shared/header" %>
 
@@ -16,6 +25,17 @@
                 </div>
 
                 <div class="flex items-center gap-2">
+                    <%# Spin the Wheel button (host only, when enabled) %>
+                    <% if policy(Current.game_session).update? && Current.game_session.wheel_can_spin? %>
+                        <%= button_to spin_wheel_path,
+                            method: :post,
+                            class: "flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-lg text-sm font-bold transition-all shadow-lg shadow-purple-500/20",
+                            title: "Spin the Wheel" do %>
+                            <%= heroicon "arrow-path", variant: :outline, options: { class: "w-4 h-4" } %>
+                            <span>Spin Wheel</span>
+                        <% end %>
+                    <% end %>
+
                     <% if policy(Current.game_session).reset? %>
                         <%= button_to reset_votes_path, 
                             method: :post,

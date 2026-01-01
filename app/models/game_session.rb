@@ -3,15 +3,18 @@ class GameSession < ApplicationRecord
   has_many :games, dependent: :destroy
 
   belongs_to :previous_game, class_name: "Game", optional: true
+  belongs_to :wheel_winner, class_name: "Game", optional: true
 
   validates :code, presence: true, uniqueness: true
 
   validates :bonus_votes, numericality: { greater_than_or_equal_to: 0 }
   validates :previous_game_penalty, numericality: { greater_than_or_equal_to: 0 }
+  validates :wheel_filter_top_count, numericality: { greater_than_or_equal_to: 2 }, allow_nil: true
 
   before_validation :set_defaults, on: :create
   before_validation :generate_code, on: :create
 
+  # Countdown methods
   def start_countdown!
     return unless voting_countdown_enabled?
 
@@ -89,6 +92,84 @@ class GameSession < ApplicationRecord
     broadcast_replace_to "games", target: "countdown_badge", partial: "votes/countdown_badge", locals: { game_session: self }
   end
 
+  # Wheel of Fortune methods
+  def eligible_wheel_games
+    scope = games.order(votes_score: :desc, name: :asc)
+
+    case wheel_filter_mode
+    when "top_x"
+      # Get top N games with positive votes
+      scope.where("votes_score > 0").limit(wheel_filter_top_count)
+    when "all"
+      scope
+    when "winners"
+      # Get all games tied for first place
+      max_score = scope.maximum(:votes_score)
+      scope.where(votes_score: max_score)
+    else
+      scope.limit(5)
+    end
+  end
+
+  def wheel_can_spin?
+    wheel_enabled? && eligible_wheel_games.count >= 2 && !wheel_active?
+  end
+
+  def start_wheel_spin!
+    eligible = eligible_wheel_games.to_a
+    return false if eligible.count < 2
+
+    # Pick random winner
+    winner = eligible.sample
+
+    # Set spin state with 5 second countdown
+    update!(
+      wheel_spin_id: SecureRandom.uuid,
+      wheel_start_at: Time.current + 5.seconds,
+      wheel_winner_id: winner.id,
+      wheel_active: true
+    )
+
+    broadcast_wheel_update
+    true
+  end
+
+  def dismiss_wheel!
+    update!(
+      wheel_spin_id: nil,
+      wheel_start_at: nil,
+      wheel_winner_id: nil,
+      wheel_active: false
+    )
+
+    broadcast_wheel_dismiss
+  end
+
+  def wheel_games_data
+    eligible_wheel_games.map do |game|
+      {
+        id: game.id,
+        name: game.name,
+        votes: game.votes_score
+      }
+    end
+  end
+
+  def broadcast_wheel_update
+    broadcast_replace_to "games", target: "wheel_container", partial: "wheel/overlay", locals: {
+      game_session: self,
+      games: wheel_games_data,
+      proportional: wheel_proportional?,
+      start_at: wheel_start_at,
+      winner_id: wheel_winner_id,
+      spin_id: wheel_spin_id
+    }
+  end
+
+  def broadcast_wheel_dismiss
+    broadcast_replace_to "games", target: "wheel_container", partial: "wheel/empty"
+  end
+
   private
 
   def set_defaults
@@ -99,6 +180,10 @@ class GameSession < ApplicationRecord
     self.exclude_previous_game = false if exclude_previous_game.nil?
     self.voting_countdown_duration_minutes ||= 5
     self.voting_countdown_enabled = false if voting_countdown_enabled.nil?
+    self.wheel_enabled = false if wheel_enabled.nil?
+    self.wheel_filter_mode ||= "top_x"
+    self.wheel_filter_top_count ||= 5
+    self.wheel_proportional = false if wheel_proportional.nil?
   end
 
   def generate_code
