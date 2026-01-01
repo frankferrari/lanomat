@@ -38,11 +38,9 @@
                 <%= heroicon "star", variant: :outline, options: { class: "w-5 h-5" } %>
             <% end %>
           <% else %>
-            <% if Current.game_session.users.host.count > 1 %>
-                <%= button_to demote_player_path(user), method: :patch, class: "p-2 text-slate-400 hover:text-slate-300 hover:bg-slate-600/50 rounded-xl transition-all cursor-pointer", title: "Demote to Player", form: { data: { turbo_frame: dom_id(user) } } do %>
+            <%= button_to demote_player_path(user), method: :patch, class: "p-2 text-slate-400 hover:text-slate-300 hover:bg-slate-600/50 rounded-xl transition-all cursor-pointer", title: "Demote to Player", form: { data: { turbo_frame: dom_id(user) } } do %>
                 <%= heroicon "arrow-down-circle", variant: :outline, options: { class: "w-5 h-5" } %>
                 <% end %>
-            <% end %>
           <% end %>
 
           <%= button_to player_path(user), method: :delete, class: "p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-all cursor-pointer", title: "Remove Player", form: { data: { turbo_confirm: "Remove #{user.name} from this session?", turbo_frame: dom_id(user) } } do %>
