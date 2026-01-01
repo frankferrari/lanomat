@@ -24,7 +24,7 @@
   ].select { |s| s[:enabled] }
 %>
 
-<% if settings.any? %>
+<% if settings.any? || Current.game_session.wheel_enabled %>
 <div class="<%= local_assigns[:vertical] ? 'flex flex-col gap-4' : 'flex flex-wrap items-center justify-center gap-6 mb-10 mt-2' %>">
   <% settings.each do |setting| %>
     <div class="relative group aspect-[3/4] max-w-[200px] w-full">
@@ -50,6 +50,69 @@
 
         <!-- Bottom Accent Glow -->
         <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-purple-600/10 to-transparent pointer-events-none"></div>
+      </div>
+    </div>
+  <% end %>
+  
+  <%# Wheel of Fortune Card - Rainbow Theme %>
+  <% if Current.game_session.wheel_enabled %>
+    <% 
+      wheel_mode = Current.game_session.wheel_filter_mode
+      wheel_mode_label = case wheel_mode
+        when "top_x" then "Top #{Current.game_session.wheel_filter_top_count}"
+        when "all" then "All Games"
+        when "winners" then "Winners"
+        else "Configured"
+      end
+      wheel_description = case wheel_mode
+        when "top_x"
+          "Wheel spins among the top #{Current.game_session.wheel_filter_top_count} voted games#{Current.game_session.wheel_proportional? ? ' with weighted slices' : ' with equal chances'}."
+        when "all"
+          "Every game gets a spot on the wheel#{Current.game_session.wheel_proportional? ? ', sized by vote count' : ' with equal odds'}."
+        when "winners"
+          "Only tied top-voted games compete on the wheel for the final pick."
+        else
+          "Wheel is configured and ready to spin."
+      end
+    %>
+    <div class="relative group aspect-[3/4] max-w-[200px] w-full">
+      <!-- Rainbow Glow effect - Animated -->
+      <div class="absolute -inset-0.5 bg-gradient-to-br from-rose-500 via-amber-400 via-30% via-emerald-400 via-50% via-cyan-400 via-70% to-violet-500 rounded-[1.8rem] blur-lg opacity-40 group-hover:opacity-70 transition duration-500 animate-[spin_8s_linear_infinite]"></div>
+      
+      <div class="relative h-full flex flex-col items-center justify-center p-5 bg-[#0f111a] border border-white/20 rounded-[1.8rem] text-center overflow-hidden shadow-2xl">
+        <!-- Rainbow Top Border Accent -->
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 via-amber-400 via-emerald-400 via-cyan-400 to-violet-500 opacity-80"></div>
+        
+        <!-- Floating Icon with Rainbow Glow -->
+        <div class="mb-4 relative">
+            <div class="absolute inset-0 bg-gradient-to-r from-amber-400 via-emerald-400 to-cyan-400 blur-xl opacity-40"></div>
+            <div class="relative">
+                <%= heroicon "arrow-path", variant: :solid, options: { class: "w-10 h-10 text-transparent bg-gradient-to-br from-rose-400 via-amber-300 via-emerald-300 to-cyan-400 bg-clip-text drop-shadow-[0_0_15px_rgba(251,191,36,0.6)]" } %>
+                <svg class="w-10 h-10 absolute inset-0" fill="url(#rainbow-gradient)" viewBox="0 0 24 24">
+                  <defs>
+                    <linearGradient id="rainbow-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#f43f5e"/>
+                      <stop offset="25%" style="stop-color:#fbbf24"/>
+                      <stop offset="50%" style="stop-color:#34d399"/>
+                      <stop offset="75%" style="stop-color:#22d3ee"/>
+                      <stop offset="100%" style="stop-color:#a78bfa"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/>
+                </svg>
+            </div>
+        </div>
+        
+        <h3 class="text-base font-bold bg-gradient-to-r from-rose-300 via-amber-200 to-emerald-300 bg-clip-text text-transparent mb-1 tracking-tight">Wheel of Fortune</h3>
+        <p class="text-xs font-bold bg-gradient-to-r from-amber-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent mb-3 uppercase tracking-widest">
+          <%= wheel_mode_label %>
+        </p>
+        <p class="text-[10px] text-slate-400 leading-tight font-medium px-1">
+          <%= wheel_description %>
+        </p>
+
+        <!-- Rainbow Bottom Accent Glow -->
+        <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-500/10 via-emerald-500/5 to-transparent pointer-events-none"></div>
       </div>
     </div>
   <% end %>

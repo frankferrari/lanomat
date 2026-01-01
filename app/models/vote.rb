@@ -15,9 +15,13 @@ class Vote < ApplicationRecord
     return unless user && game && game.game_session
 
     # Calculate total bonus votes used by the user across all their votes
-    # Used bonus = (weight - 1) for each vote
-    current_bonus_usage = user.votes.where.not(id: id).sum { |v| (v.weight || 1) - 1 }
-    new_bonus_usage = current_bonus_usage + ((weight || 1) - 1)
+    # Used bonus = (weight - 1) for each vote, but only if weight > 1
+    current_bonus_usage = user.votes.where.not(id: id).sum { |v| [ 0, (v.weight || 1) - 1 ].max }
+
+    # Calculate new bonus usage for this vote
+    new_vote_bonus = [ 0, (weight || 1) - 1 ].max
+
+    new_bonus_usage = current_bonus_usage + new_vote_bonus
 
     limit = game.game_session.bonus_votes || 0
     if new_bonus_usage > limit

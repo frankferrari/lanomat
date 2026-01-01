@@ -48,13 +48,21 @@ class VotesController < ApplicationController
       end
     else
       if existing_vote
-        # Allow decrementing below 0, but destroy at 0 (meaningless vote)
+        # Allow decrementing, but cap at -1
         if existing_vote.weight == 1
+          # If reducing from 1, we go to 0 which means deleting the vote (no vote)
           existing_vote.destroy
-        else
+        elsif existing_vote.weight > -1
+          # If weight is > -1 (and not 1, so essentially 0 is handled by destroy above? No wait.
+          # Weight 1 -> destroy (0).
+          # Higher weights -> decrement.
+          # Weight 0 is not possible as per validation.
+          # Weight -1 -> Stay at -1 (Don't decrement further).
+
           existing_vote.weight -= 1
           existing_vote.save
         end
+        # If weight is already -1, do nothing (cap at -1)
       else
         # Create new downvote with weight -1
         current_user.votes.create(game: @game, weight: -1)

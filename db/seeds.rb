@@ -8,14 +8,13 @@ User.destroy_all
 GameSession.destroy_all
 
 # Create Default Session
-session = GameSession.create!(code: "AAAAA")
+session = GameSession.create!(code: "TMUSL")
 puts "Created Session: #{session.code}"
 
 # Create Users
-host = User.create!(name: "HostUser", role: :host, game_session: session)
+host = User.create!(name: "Tobl", role: :host, game_session: session)
 player1 = User.create!(name: "Player1", role: :player, game_session: session)
-player2 = User.create!(name: "Player2", role: :player, game_session: session)
-puts "Created Users: #{host.name}, #{player1.name}, #{player2.name}"
+puts "Created Users: #{host.name}, #{player1.name}"
 
 games_data = [
   { name: "Conan Exiles", tags: [ "Survival", "RPG" ], price: "~4 €", max_players: 40 },
@@ -44,7 +43,8 @@ games_data = [
   { name: "Hell Let Loose", tags: [ "Shooter" ], price: "", max_players: 100 },
   { name: "Squad", tags: [ "Shooter" ], price: "", max_players: 100 },
   { name: "Command and Conquer - RA 2", tags: [ "RealTime Strategy" ], price: "", max_players: nil },
-  { name: "Valheim", tags: [ "Survival" ], price: "", max_players: nil }
+  { name: "Valheim", tags: [ "Survival" ], price: "", max_players: nil },
+  { name: "Call of Duty: MW", tags: [ "Shooter" ], price: "", max_players: 32 }
 ]
 
 games_data.each do |game_attr|
