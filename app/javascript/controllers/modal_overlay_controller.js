@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { Turbo } from "@hotwired/turbo-rails"
 
 /**
  * A generic dialog controller for modal overlays.
@@ -44,6 +45,15 @@ export default class extends Controller {
         this.unlockScroll()
         // Emit an event if needed
         this.dispatch("closed")
+
+        // Reload the votes_view turbo frame to reflect any settings changes
+        const votesFrame = document.getElementById("votes_view")
+        if (votesFrame && votesFrame.src) {
+            votesFrame.reload()
+        } else if (votesFrame) {
+            // If frame doesn't have a src, trigger a Turbo visit to refresh the page
+            Turbo.visit(window.location.href, { action: "replace" })
+        }
     }
 
     toggle() {
