@@ -1,17 +1,24 @@
-<%# Logic: Identify leading game for special highlighting %>
-<% is_leader = local_assigns[:game_iteration]&.index == 0 && game.votes_score > 0 %>
 <%# Determine if user has voted for this game %>
 <% voted = local_assigns[:voted] || local_assigns[:voted_game_ids]&.include?(game.id) %>
 
-<div id="<%= dom_id game %>" class="relative group/card bg-slate-900 rounded-2xl border transition-all duration-300 p-5 flex flex-col justify-between <%= is_leader ? 'border-yellow-500/50 ring-1 ring-yellow-500/20 shadow-xl' : 'border-slate-800 hover:border-slate-700' %>">
+<%# Calculate opacity for negative scores: 100% at 0, gradually fade to 20% at -5 and below %>
+<% 
+  card_opacity = if game.votes_score >= 0
+                   1.0
+                 else
+                   # Map -1 to 0.84, -2 to 0.68, -3 to 0.52, -4 to 0.36, -5+ to 0.2
+                   [0.2, 1.0 + (game.votes_score * 0.16)].max
+                 end
+%>
+
+<div id="<%= dom_id game, :grid %>" 
+     data-sortable-list-target="item"
+     data-score="<%= game.votes_score %>"
+     data-name="<%= game.name %>"
+     style="opacity: <%= card_opacity %>;"
+     class="relative group/card bg-slate-900 rounded-2xl border transition-all duration-300 p-5 flex flex-col justify-between border-slate-800 hover:border-slate-700 data-[leader=true]:border-yellow-500/50 data-[leader=true]:ring-1 data-[leader=true]:ring-yellow-500/20 data-[leader=true]:shadow-xl">
   
-  <%# Leader Badge %>
-  <% if is_leader %>
-    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-500 text-slate-950 text-xs font-black uppercase px-3 py-0.5 rounded-full flex items-center gap-1 shadow-lg z-10">
-      <%= heroicon "star", variant: :outline, options: { class: "w-3 h-3" } %>
-      <span>Leading</span>
-    </div>
-  <% end %>
+  <%# Leader Badge - rendered dynamically by Stimulus controller %>
 
   <%# Game Information %>
   <div class="flex justify-between items-start">
@@ -47,7 +54,6 @@
     </div>
 
     <%# Vote Controls %>
-    <%# Vote Controls %>
     <% current_weight = current_user.votes.find_by(game: game)&.weight || 0 %>
     <div class="flex flex-col items-center bg-slate-950 border border-slate-800 p-2 rounded-xl min-w-14">
       <%= button_to vote_vote_path(game, direction: 'up', view: @view_mode || 'grid'), 
@@ -59,13 +65,17 @@
       
       <div class="flex flex-col items-center gap-0">
         <% 
-          vote_color = case current_weight
-                       when 0 then "text-white"
-                       when 1 then "text-green-400"
-                       when 2 then "text-lime-400"
-                       when 3 then "text-yellow-400"
-                       when 4 then "text-orange-400"
-                       else "text-red-500"
+          vote_color = if current_weight < 0
+                         "text-red-500"
+                       else
+                         case current_weight
+                         when 0 then "text-white"
+                         when 1 then "text-green-400"
+                         when 2 then "text-lime-400"
+                         when 3 then "text-yellow-400"
+                         when 4 then "text-orange-400"
+                         else "text-red-500"
+                         end
                        end
         %>
         <span class="text-xl font-black min-w-6 text-center leading-none <%= vote_color %>">

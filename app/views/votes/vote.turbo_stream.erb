@@ -1,4 +1,7 @@
-<%= turbo_stream.replace dom_id(@game) do %>
+<%# This template updates the current user's view after voting %>
+<%# Other users receive updates via the broadcast in Vote#broadcast_game_update %>
+
+<%= turbo_stream.replace dom_id(@game, @view_mode.to_sym) do %>
   <%= render partial: "votes/card_#{@view_mode}", locals: { game: @game, voted: @voted } %>
 <% end %>
 
