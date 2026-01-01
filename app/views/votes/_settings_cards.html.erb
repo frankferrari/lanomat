@@ -2,14 +2,14 @@
   settings = [
     {
       title: "Bonus Votes Pool",
-      value: "#{Current.game_session.bonus_votes} (Total)",
+      value: "+#{Current.game_session.bonus_votes} Bonus Vote(s)",
       description: "A global pool of #{Current.game_session.bonus_votes} bonus votes is available for all users to distribute.",
       icon: "gift",
       enabled: Current.game_session.enable_bonus_votes
     },
     {
       title: "Punish Previous Game Tags",
-      value: "Active (-#{Current.game_session.previous_game_penalty} pts)",
+      value: "-#{Current.game_session.previous_game_penalty} Point(s)",
       description: "Votes for games with tags matching the previous game are penalized by #{Current.game_session.previous_game_penalty} points.",
       icon: "shield-exclamation",
       enabled: Current.game_session.punish_previous_game_tags
