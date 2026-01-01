@@ -1,12 +1,14 @@
 class GamesController < ApplicationController
   def index
     # Management index view
+    authorize Game
     @games = Current.game_session.games.includes(:tags).order(name: :asc)
     @new_game = Current.game_session.games.new
   end
 
   def create
     @game = Current.game_session.games.new(game_params)
+    authorize @game
     if @game.save
       respond_to do |format|
         format.html { redirect_to games_path, notice: "Game added successfully." }
@@ -21,6 +23,7 @@ class GamesController < ApplicationController
 
   def destroy
     @game = Game.find(params[:id])
+    authorize @game
     @game.destroy
     respond_to do |format|
       format.html { redirect_to games_path, notice: "Game removed." }
@@ -30,6 +33,7 @@ class GamesController < ApplicationController
 
   def update
     @game = Game.find(params[:id])
+    authorize @game
     if @game.update(game_params)
       respond_to do |format|
         format.html { redirect_to games_path, notice: "Game updated." }

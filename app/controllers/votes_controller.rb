@@ -72,6 +72,7 @@ class VotesController < ApplicationController
   end
 
   def reset
+    authorize Current.game_session
     Vote.joins(:game).where(games: { game_session: Current.game_session }).destroy_all
     Current.game_session.games.update_all(votes_score: 0)
 

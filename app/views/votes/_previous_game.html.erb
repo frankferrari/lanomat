@@ -12,6 +12,7 @@
         
         <div class="relative w-full sm:w-64" data-controller="dropdown">
           <%= form_with model: Current.game_session, url: settings_path, method: :patch, data: { controller: "auto-submit" } do |f| %>
+            <%= hidden_field_tag :view, params[:view] %>
             <%= f.hidden_field :previous_game_id, 
                 value: Current.game_session.previous_game_id,
                 data: { dropdown_target: "hiddenInput", action: "change->auto-submit#submit" } %>

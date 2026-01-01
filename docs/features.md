@@ -38,4 +38,4 @@
 - [x] Add gradient background color transformation depending on votes
 - [x] Instant dynamic update of the voting results
 - [x] Allow negative votes
-- [ ] Reset Voting button for host
+- [x] Reset Voting button for host

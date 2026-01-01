@@ -19,7 +19,7 @@
                 <% end %>
             </div>
 
-            <% if current_user.host? %>
+            <% if policy(Current.game_session).update? %>
                 <div data-controller="modal-overlay" class="p-1 bg-slate-800/50 rounded-xl border border-slate-700 flex">
                     <button data-action="modal-overlay#open" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-700" title="Settings">
                         <%= heroicon "adjustments-horizontal", variant: :outline, options: { class: "w-4 h-4" } %>
