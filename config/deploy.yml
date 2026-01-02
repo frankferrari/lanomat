@@ -10,7 +10,7 @@ ssh:
 # Deploy to these servers.
 servers:
   web:
-    - 188.34.194.170
+    - 159.69.203.196
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -66,7 +66,7 @@ asset_path: /rails/public/assets
 # Configure the image builder.
 builder:
   arch: amd64
-  remote: ssh://tobi@188.34.194.170
+  remote: ssh://tobi@159.69.203.196
   cache:
     type: registry
     options: mode=max,image-manifest=true

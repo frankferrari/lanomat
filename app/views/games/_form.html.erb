@@ -11,29 +11,31 @@
     </div>
   <% end %>
 
-  <!-- Row 1: Title (Left) -->
-  <div class="sm:col-span-2 space-y-1">
-    <%= form.label :name, "TITLE", class: "text-xs font-bold text-slate-500 uppercase tracking-widest ml-1" %>
-    <%= form.text_field :name, required: true, placeholder: "Quake III Arena", class: "w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-purple-500 outline-none transition-all text-white placeholder-slate-700" %>
+  <!-- Row 1: Title (Full width) -->
+  <div class="sm:col-span-4 flex items-end gap-2">
+    <div class="space-y-1 flex-1">
+      <%= form.label :name, "TITLE", class: "text-xs font-bold text-slate-500 uppercase tracking-widest ml-1" %>
+      <%= form.text_field :name, required: true, placeholder: "Quake III Arena", class: "w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-purple-500 outline-none transition-all text-white placeholder-slate-700" %>
+    </div>
+    
+    <button type="submit" class="bg-purple-600 hover:bg-purple-500 p-3 rounded-xl shadow-lg transition-colors mb-0.5">
+      <%= heroicon "plus", variant: :outline, options: { class: "w-5 h-5 text-white" } %>
+    </button>
   </div>
 
-  <!-- Row 1: Price (Center) -->
+  <% if false %>
   <div class="sm:col-span-1 space-y-1">
     <%= form.label :price, "PRICE", class: "text-xs font-bold text-slate-500 uppercase tracking-widest ml-1" %>
     <%= form.text_field :price, placeholder: "Free", class: "w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-purple-500 outline-none transition-all text-white placeholder-slate-700" %>
   </div>
 
-  <!-- Row 1: Max Players (Right) -->
   <div class="sm:col-span-1 flex items-end gap-2">
     <div class="space-y-1 flex-1">
       <%= form.label :max_players, "PLAYERS", class: "text-xs font-bold text-slate-500 uppercase tracking-widest ml-1" %>
       <%= form.number_field :max_players, placeholder: "16", class: "w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-purple-500 outline-all text-white placeholder-slate-700" %>
     </div>
-    
-    <button type="submit" class="bg-purple-600 hover:bg-purple-500 p-3 rounded-xl shadow-lg transition-colors">
-      <%= heroicon "plus", variant: :outline, options: { class: "w-5 h-5 text-white" } %>
-    </button>
   </div>
+  <% end %>
 
   <!-- Row 2: Tags (Full Width) -->
   <div class="sm:col-span-4 space-y-1 relative" 

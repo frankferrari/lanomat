@@ -34,6 +34,7 @@
         </div>
       <% end %>
 
+      <% if false %>
       <% if game.price.present? %>
         <div class="flex items-center gap-1.5 text-slate-400">
           <%= heroicon "tag", variant: :outline, options: { class: "w-3.5 h-3.5 text-purple-500" } %>
@@ -45,6 +46,7 @@
           <%= heroicon "user-group", variant: :outline, options: { class: "w-3.5 h-3.5 text-blue-500" } %>
           <span class="text-xs font-medium"><%= game.max_players %> Max</span>
         </div>
+      <% end %>
       <% end %>
     </div>
   </div>
