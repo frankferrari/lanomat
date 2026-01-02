@@ -27,6 +27,13 @@
       enabled: Current.game_session.enable_bonus_votes
     },
     {
+      title: "Downvotes",
+      value: "DISABLED",
+      description: "Negative votes are disabled. You can only undo your own upvotes.",
+      icon: "hand-thumb-down",
+      enabled: !Current.game_session.allow_downvotes?
+    },
+    {
       title: "Punish Previous Game Tags",
       value: "-#{Current.game_session.previous_game_penalty} pts",
       description: "Votes for games with tags matching the previous game are penalized by #{Current.game_session.previous_game_penalty} points.",

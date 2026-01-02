@@ -56,6 +56,19 @@ class VotesController < ApplicationController
         end
       end
     else
+      # Check downvote permission
+      if !Current.game_session.allow_downvotes?
+        # Only allow if we are undoing an upvote (weight > 0)
+        unless existing_vote && existing_vote.weight > 0
+          respond_to do |format|
+            format.html { redirect_to votes_path, alert: "Downvoting is disabled!" }
+            format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash", locals: { alert: "Downvoting is disabled!" }) }
+          end
+          return
+        end
+      end
+
+
       if existing_vote
         # Allow decrementing, but cap at -1
         if existing_vote.weight == 1

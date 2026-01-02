@@ -6,7 +6,6 @@ one:
   price: MyString
   max_players: 1
   votes: 1
-  game_session: one
 
 two:
   name: MyString

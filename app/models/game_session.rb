@@ -190,6 +190,7 @@ class GameSession < ApplicationRecord
     self.wheel_filter_mode ||= "top_x"
     self.wheel_filter_top_count ||= 5
     self.wheel_proportional = false if wheel_proportional.nil?
+    self.allow_downvotes = true if allow_downvotes.nil?
   end
 
   def generate_code
