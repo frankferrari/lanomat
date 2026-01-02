@@ -16,10 +16,10 @@
      data-score="<%= game.votes_score %>"
      data-name="<%= game.name %>"
      style="opacity: <%= card_opacity %>;"
-     class="group/card bg-slate-900 rounded-lg border transition-all duration-300 p-3 grid grid-cols-12 items-center gap-4 border-slate-800 hover:border-slate-700 data-[leader=true]:border-yellow-500/50 data-[leader=true]:ring-1 data-[leader=true]:ring-yellow-500/20">
+     class="group/card bg-slate-900 rounded-lg border transition-all duration-300 p-3 flex items-center gap-4 border-slate-800 hover:border-slate-700 data-[leader=true]:border-yellow-500/50 data-[leader=true]:ring-1 data-[leader=true]:ring-yellow-500/20">
   
-  <%# Game Information (spans 10 columns) %>
-  <div class="col-span-10 flex flex-col justify-center gap-1">
+  <%# Game Information %>
+  <div class="flex-1 min-w-0 flex flex-col justify-center gap-1">
     <h3 class="font-bold text-md leading-tight group-hover/card:text-purple-400 transition-colors truncate flex items-center gap-2">
       <%= game.name %>
       <%# Leader badge rendered dynamically by Stimulus %>
@@ -33,35 +33,19 @@
           <% end %>
         </div>
       <% end %>
-
-      <% if false %>
-      <% if game.price.present? %>
-        <div class="flex items-center gap-1.5 text-slate-400">
-          <%= heroicon "tag", variant: :outline, options: { class: "w-3.5 h-3.5 text-purple-500" } %>
-          <span class="text-xs font-medium"><%= game.price %></span>
-        </div>
-      <% end %>
-      <% if game.max_players.present? %>
-        <div class="flex items-center gap-1.5 text-slate-400">
-          <%= heroicon "user-group", variant: :outline, options: { class: "w-3.5 h-3.5 text-blue-500" } %>
-          <span class="text-xs font-medium"><%= game.max_players %> Max</span>
-        </div>
-      <% end %>
-      <% end %>
     </div>
   </div>
 
-  <%# Vote Controls (spans 2 columns) %>
+  <%# Vote Controls %>
   <% current_weight = current_user.votes.find_by(game: game)&.weight || 0 %>
-  <div class="col-span-2 justify-self-end flex flex-row items-center bg-slate-950 border border-slate-800 py-1 px-3 rounded-xl gap-3">
+  <div class="shrink-0 flex flex-row items-center bg-slate-950 border border-slate-800 py-1 px-3 rounded-xl gap-2 sm:gap-3">
     <%= button_to vote_vote_path(game, direction: 'up', view: @view_mode || 'list'), 
         method: :post, 
         class: "p-1 transition-colors group/up #{voted ? 'text-green-400' : 'text-slate-400 hover:text-green-400'}" do %>
-      <%= heroicon "chevron-up", variant: voted ? :solid : :outline, 
-          options: { class: "w-5 h-5 group-active/up:scale-90 transition-transform" } %>
+      <%= heroicon "chevron-up", variant: voted ? :solid : :outline, options: { class: "w-4 h-4 sm:w-5 sm:h-5 group-active/up:scale-90 transition-transform" } %>
     <% end %>
     
-    <div class="flex flex-col items-center min-w-6">
+    <div class="flex flex-col items-center min-w-[1.5rem] sm:min-w-[2rem]">
       <% 
         vote_color = if current_weight < 0
                        "text-red-500"
@@ -76,7 +60,7 @@
                        end
                      end
       %>
-      <span class="text-base font-black text-center <%= vote_color %>">
+      <span class="text-sm sm:text-base font-black text-center <%= vote_color %>">
         <%= game.votes_score %>
       </span>
     </div>
@@ -84,8 +68,7 @@
     <%= button_to vote_vote_path(game, direction: 'down', view: @view_mode || 'list'), 
         method: :post, 
         class: "p-1 text-slate-400 hover:text-red-400 transition-colors group/down" do %>
-      <%= heroicon "chevron-down", variant: :outline, 
-          options: { class: "w-5 h-5 group-active/down:scale-90 transition-transform" } %>
+      <%= heroicon "chevron-down", variant: :outline, options: { class: "w-4 h-4 sm:w-5 sm:h-5 group-active/down:scale-90 transition-transform" } %>
     <% end %>
   </div>
 </div>

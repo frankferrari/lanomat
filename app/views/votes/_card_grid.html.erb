@@ -59,8 +59,7 @@
     <% current_weight = current_user.votes.find_by(game: game)&.weight || 0 %>
     <div class="flex flex-col items-center bg-slate-950 border border-slate-800 p-2 rounded-xl min-w-14">
       <%= button_to vote_vote_path(game, direction: 'up', view: @view_mode || 'grid'), 
-          method: :post, 
-          class: "p-1 transition-colors group/up #{voted ? 'text-green-400' : 'text-slate-400 hover:text-green-400'}" do %>
+          method: :post, class: "p-1 transition-colors group/up #{voted ? 'text-green-400' : 'text-slate-400 hover:text-green-400'}" do %>
         <%= heroicon "chevron-up", variant: voted ? :solid : :outline, 
             options: { class: "w-5 h-5 group-active/up:scale-90 transition-transform" } %>
       <% end %>
@@ -88,8 +87,7 @@
       <%= button_to vote_vote_path(game, direction: 'down', view: @view_mode || 'grid'), 
           method: :post, 
           class: "p-1 text-slate-400 hover:text-red-400 transition-colors group/down" do %>
-        <%= heroicon "chevron-down", variant: :outline, 
-            options: { class: "w-5 h-5 group-active/down:scale-90 transition-transform" } %>
+        <%= heroicon "chevron-down", variant: :outline, options: { class: "w-5 h-5 group-active/down:scale-90 transition-transform" } %>
       <% end %>
     </div>
   </div>

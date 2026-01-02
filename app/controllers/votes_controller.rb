@@ -11,7 +11,12 @@ class VotesController < ApplicationController
     end
 
     @games = scope
-    @view_mode = params[:view].presence_in(%w[grid list]) || "grid"
+    @view_mode = if mobile_device?
+                   "list"
+    else
+                   params[:view].presence_in(%w[grid list]) || "grid"
+    end
+
     @voted_game_ids = current_user.votes.where(game: @games).pluck(:game_id).to_set
   end
 
@@ -71,7 +76,12 @@ class VotesController < ApplicationController
 
     @game.reload
     @voted = current_user.voted_for?(@game)
-    @view_mode = params[:view].presence_in(%w[grid list]) || "grid"
+    @view_mode = if mobile_device?
+                   "list"
+    else
+                   params[:view].presence_in(%w[grid list]) || "grid"
+    end
+
 
     respond_to do |format|
       format.html { redirect_to votes_path }

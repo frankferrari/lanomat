@@ -12,24 +12,25 @@
 <div class="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-purple-500/30 pb-20">
     <%= render "shared/header" %>
 
-    <main class="max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
-        <turbo-frame id="votes_view" class="block space-y-6" data-controller="view-mode" data-view-mode-current-value="<%= @view_mode %>">
+    <main class="max-w-6xl mx-auto p-6 space-y-6">
+        <turbo-frame id="votes_view" class="block space-y-4" data-controller="view-mode" data-view-mode-current-value="<%= @view_mode %>" data-view-mode-locked-value="<%= mobile_device? %>">
             <!-- Title and View Toggle Row -->
-            <div class="flex items-center justify-between gap-4">
-                <div>
-                    <h2 class="text-2xl font-bold flex items-center gap-2">
-                        <%= heroicon "squares-2x2", variant: :outline, options: { class: "w-6 h-6 text-purple-500" } %>
-                        Voting Room
+            <!-- Title Section -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
+                <div class="flex flex-col">
+                    <h2 class="text-xl sm:text-2xl font-bold flex items-center gap-2">
+                        <%= heroicon "bolt", variant: :outline, options: { class: "w-5 h-5 sm:w-6 sm:h-6 text-purple-500" } %>
+                        <span>Voting Room</span>
                     </h2>
-                      <%= render "bonus_counter" %>
+                    <p class="text-slate-400 text-sm">Cast your votes for the next game</p>
+                    <%= render "bonus_counter" %>
                 </div>
 
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 self-end sm:self-auto">
                     <%# Spin the Wheel button (host only, when enabled) %>
                     <% if policy(Current.game_session).update? && Current.game_session.wheel_can_spin? %>
                         <%= button_to spin_wheel_path,
-                            method: :post,
-                            class: "flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-lg text-sm font-bold transition-all shadow-lg shadow-purple-500/20",
+                            method: :post, class: "flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-lg text-xs sm:text-sm font-bold transition-all shadow-lg shadow-purple-500/20",
                             title: "Spin the Wheel" do %>
                             <%= heroicon "arrow-path", variant: :outline, options: { class: "w-4 h-4" } %>
                             <span>Spin Wheel</span>
@@ -39,15 +40,15 @@
                     <% if policy(Current.game_session).reset? %>
                         <%= button_to reset_votes_path, 
                             method: :post,
-                            class: "flex items-center gap-1.5 px-3 py-1.5 bg-red-600/20 border border-red-500/50 text-red-400 hover:bg-red-600/40 hover:text-red-300 rounded-lg text-sm font-medium transition-all",
+                            class: "flex items-center gap-1.5 px-3 py-1.5 bg-red-600/20 border border-red-500/50 text-red-400 hover:bg-red-600/40 hover:text-red-300 rounded-lg text-xs sm:text-sm font-medium transition-all",
                             title: "Reset All Votes",
                             data: { turbo_confirm: "Are you sure you want to reset all votes? This cannot be undone." } do %>
                             <%= heroicon "arrow-path", variant: :outline, options: { class: "w-4 h-4" } %>
-                            <span>Reset Votes</span>
+                            <span class="hidden sm:inline">Reset Votes</span>
                         <% end %>
                     <% end %>
 
-                    <div class="flex items-center bg-slate-900 border border-slate-800 rounded-lg p-1">
+                    <div class="hidden sm:flex items-center bg-slate-900 border border-slate-800 rounded-lg p-1">
                         <%= link_to votes_path(view: "grid", tag: params[:tag]), 
                             class: "p-1 px-2 rounded-md transition-colors #{@view_mode == 'grid' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'}",
                             title: "Grid View",
@@ -96,20 +97,22 @@
                         <% end %>
                     </div>
                 <% else %>
-                    <div class="flex flex-col lg:flex-row gap-8 items-start">
-                        <div id="games_list" data-controller="sortable-list" class="flex-1 flex flex-col gap-2 w-full">
-                            <%= render partial: "votes/card_list", collection: @games, as: :game, locals: { voted_game_ids: @voted_game_ids } %>
-                            <% if @games.empty? %>
-                                <div class="py-20 text-center text-slate-500 border-2 border-dashed border-slate-800 rounded-3xl italic">
-                                    No games found.
-                                </div>
-                            <% end %>
-                        </div>
-                        
-                        <aside class="w-full lg:w-[200px] shrink-0">
-                            <%= render "votes/settings_cards", vertical: true %>
-                        </aside>
-                    </div>
+                <div class="flex flex-col lg:flex-row gap-6 items-start">
+                    <%# Settings Section (Top on mobile, Sidebar on desktop) %>
+                    <section class="w-full lg:w-[200px] shrink-0 lg:order-2">
+                        <%= render "votes/settings_cards", vertical: true %>
+                    </section>
+
+                    <%# Games List Section %>
+                    <section id="games_list" data-controller="sortable-list" class="flex-1 flex flex-col gap-2 w-full lg:order-1">
+                        <%= render partial: "votes/card_list", collection: @games, as: :game, locals: { voted_game_ids: @voted_game_ids } %>
+                        <% if @games.empty? %>
+                            <div class="py-20 text-center text-slate-500 border-2 border-dashed border-slate-800 rounded-3xl italic">
+                                No games found.
+                            </div>
+                        <% end %>
+                    </section>
+                </div>
                 <% end %>
             </div>
         </turbo-frame>

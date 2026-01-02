@@ -1,10 +1,17 @@
-<tr id="<%= dom_id game %>" class="hover:bg-slate-800/30 transition-colors group">
-    <td class="px-4 py-3">
+<tr id="<%= dom_id game %>" class="hover:bg-slate-800/30 transition-colors group grid grid-cols-[1fr_auto] lg:table-row border-b border-slate-800 lg:border-none last:border-0 items-center">
+    <td class="px-3 pt-3 pb-1 lg:px-4 lg:py-3 lg:table-cell">
         <%= form_with(model: game, data: { controller: "auto-submit", action: "input->auto-submit#submit change->auto-submit#submit" }) do |f| %>
             <%= f.text_field :name, class: "bg-slate-800/30 border border-slate-700/50 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 w-full font-bold text-slate-200 px-3 py-2 placeholder-slate-600 rounded-lg transition-all" %>
         <% end %>
     </td>
-    <td class="px-4 py-3">
+    
+    <td class="px-3 py-3 lg:px-4 lg:py-3 lg:table-cell row-span-2 flex items-center justify-end h-full">
+        <%= button_to game_path(game), method: :delete, class: "p-2 text-slate-600 hover:text-red-500 transition-colors lg:opacity-0 group-hover:opacity-100", form: { data: { turbo_confirm: "Delete this game completely?" } } do %>
+            <%= heroicon "trash", variant: :outline, options: { class: "w-4 h-4" } %>
+        <% end %>
+    </td>
+
+    <td class="px-3 pt-1 pb-3 lg:px-4 lg:py-3 lg:table-cell col-start-1">
         <%= form_with(model: game, data: { controller: "auto-submit", action: "change->auto-submit#submit" }) do |f| %>
             <div class="relative" 
                  data-controller="combobox"
@@ -29,23 +36,6 @@
                      class="absolute top-full left-0 w-64 mt-1 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl z-50 max-h-48 overflow-y-auto hidden">
                 </div>
             </div>
-        <% end %>
-    </td>
-    <% if false %>
-    <td class="px-4 py-3">
-        <%= form_with(model: game, data: { controller: "auto-submit", action: "input->auto-submit#submit change->auto-submit#submit" }) do |f| %>
-            <%= f.text_field :price, class: "bg-slate-800/30 border border-slate-700/50 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 text-slate-400 px-3 py-2 w-full rounded-lg transition-all" %>
-        <% end %>
-    </td>
-    <td class="px-4 py-3">
-        <%= form_with(model: game, data: { controller: "auto-submit", action: "input->auto-submit#submit change->auto-submit#submit" }) do |f| %>
-            <%= f.number_field :max_players, class: "bg-slate-800/30 border border-slate-700/50 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 text-slate-400 px-3 py-2 w-full rounded-lg transition-all" %>
-        <% end %>
-    </td>
-    <% end %>
-    <td class="px-4 py-3 text-right">
-        <%= button_to game_path(game), method: :delete, class: "p-2 text-slate-600 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100", form: { data: { turbo_confirm: "Delete this game completely?" } } do %>
-            <%= heroicon "trash", variant: :outline, options: { class: "w-4 h-4" } %>
         <% end %>
     </td>
 </tr>
