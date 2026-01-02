@@ -38,11 +38,15 @@ class VotesController < ApplicationController
     if direction == "up"
       if existing_vote
         # Try to increment weight
-        existing_vote.weight += 1
-        unless existing_vote.save
-          flash.now[:alert] = existing_vote.errors.full_messages.join(", ")
-          # Reload to reset any invalid changes in memory
-          existing_vote.reload
+        if existing_vote.weight == -1
+          existing_vote.destroy
+        else
+          existing_vote.weight += 1
+          unless existing_vote.save
+            flash.now[:alert] = existing_vote.errors.full_messages.join(", ")
+            # Reload to reset any invalid changes in memory
+            existing_vote.reload
+          end
         end
       else
         # Create new vote with weight 1 (standard vote)
