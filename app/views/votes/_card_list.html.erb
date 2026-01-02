@@ -29,7 +29,7 @@
       <% if game.tags.any? %>
         <div class="flex flex-wrap gap-1">
           <% game.tags.each do |tag| %>
-            <span class="text-[10px] text-slate-400 font-semibold bg-slate-950/50 border border-slate-800 px-2 py-0.5 rounded-md uppercase tracking-wider"><%= tag.name %></span>
+            <span class="<%= tag_color_classes(tag) %> font-semibold border px-2 py-0.5 rounded-md uppercase tracking-wider text-[10px]"><%= tag.name %></span>
           <% end %>
         </div>
       <% end %>
