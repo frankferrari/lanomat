@@ -1,15 +1,13 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  name: MyString
-  genre: MyString
-  price: MyString
-  max_players: 1
-  votes: 1
+  name: Game One
+  price: 10.00
+  max_players: 4
+  votes_score: 5
+  game_session: one
 
 two:
-  name: MyString
-  genre: MyString
-  price: MyString
-  max_players: 1
-  votes: 1
+  name: Game Two
+  price: Free
+  max_players: 100
+  votes_score: 0
+  game_session: one
