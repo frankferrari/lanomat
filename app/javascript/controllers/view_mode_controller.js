@@ -12,12 +12,17 @@ export default class extends Controller {
 
         // On page load, check if localStorage has a preferred view mode
         const savedMode = localStorage.getItem("viewMode")
+        const allowedModes = ["grid", "list"]
 
-        // If saved mode differs from current and we're not already navigating
-        if (savedMode && savedMode !== this.currentValue) {
+        // If saved mode is valid, differs from current frame state, and is not already in the URL
+        if (savedMode && allowedModes.includes(savedMode) && savedMode !== this.currentValue) {
             const url = new URL(window.location)
-            url.searchParams.set("view", savedMode)
-            Turbo.visit(url, { action: "replace" })
+
+            // Only trigger a redirect if the URL param actually needs updating
+            if (url.searchParams.get("view") !== savedMode) {
+                url.searchParams.set("view", savedMode)
+                Turbo.visit(url, { action: "replace" })
+            }
         }
     }
 

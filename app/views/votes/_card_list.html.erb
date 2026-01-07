@@ -60,7 +60,7 @@
                        end
                      end
       %>
-      <span class="text-sm sm:text-base font-black text-center <%= vote_color %>">
+      <span id="<%= dom_id game, :score_list %>" class="text-sm sm:text-base font-black text-center <%= vote_color %>">
         <%= game.votes_score %>
       </span>
     </div>

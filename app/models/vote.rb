@@ -37,18 +37,18 @@ class Vote < ApplicationRecord
   def broadcast_game_update
     # Broadcast updates for both grid and list views to all subscribers
     # Turbo will only replace the one that exists in each user's DOM
-    Turbo::StreamsChannel.broadcast_replace_to(
+    # Updated to avoid using current_user in broadcasts (which causes crashes)
+    # We update ONLY the score number content, preserving the container's attributes (color/classes)
+    Turbo::StreamsChannel.broadcast_update_to(
       "games",
-      target: ActionView::RecordIdentifier.dom_id(game, :grid),
-      partial: "votes/card_grid",
-      locals: { game: game, voted_game_ids: Set.new }
+      target: ActionView::RecordIdentifier.dom_id(game, :score_grid),
+      html: game.votes_score.to_s
     )
 
-    Turbo::StreamsChannel.broadcast_replace_to(
+    Turbo::StreamsChannel.broadcast_update_to(
       "games",
-      target: ActionView::RecordIdentifier.dom_id(game, :list),
-      partial: "votes/card_list",
-      locals: { game: game, voted_game_ids: Set.new }
+      target: ActionView::RecordIdentifier.dom_id(game, :score_list),
+      html: game.votes_score.to_s
     )
   end
 end

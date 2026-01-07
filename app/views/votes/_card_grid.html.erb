@@ -79,7 +79,7 @@
                          end
                        end
         %>
-        <span class="text-xl font-black min-w-6 text-center leading-none <%= vote_color %>">
+        <span id="<%= dom_id game, :score_grid %>" class="text-xl font-black min-w-6 text-center leading-none <%= vote_color %>">
           <%= game.votes_score %>
         </span>
       </div>
