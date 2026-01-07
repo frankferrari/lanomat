@@ -4,7 +4,10 @@ class Game < ApplicationRecord
   has_many :tags, through: :game_tags
   has_many :votes, dependent: :destroy
 
-  validates :name, presence: true
+  has_many :previous_sessions, class_name: "GameSession", foreign_key: "previous_game_id", dependent: :nullify
+  has_many :winning_sessions, class_name: "GameSession", foreign_key: "wheel_winner_id", dependent: :nullify
+
+  validates :name, presence: true, uniqueness: { scope: :game_session_id, case_sensitive: false }
 
   def tag_names=(names)
     self.tags = names.map do |name|

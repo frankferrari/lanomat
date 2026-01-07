@@ -1,27 +1,31 @@
 class GamePolicy < ApplicationPolicy
   def index?
-    true
+    user.host?
   end
 
   def show?
-    true
+    user.host?
   end
 
   def create?
-    true
+    user.host?
   end
 
   def update?
-    true
+    user.host?
   end
 
   def destroy?
-    true
+    user.host?
   end
 
   class Scope < ApplicationPolicy::Scope
     def resolve
-      scope.all
+      if user.host?
+        scope.all
+      else
+        scope.none
+      end
     end
   end
 end

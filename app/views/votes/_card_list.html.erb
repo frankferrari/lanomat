@@ -29,7 +29,7 @@
       <% if game.tags.any? %>
         <div class="flex flex-wrap gap-1">
           <% game.tags.each do |tag| %>
-            <span class="text-[10px] text-slate-400 font-semibold bg-slate-950/50 border border-slate-800 px-2 py-0.5 rounded-md uppercase tracking-wider"><%= tag.name %></span>
+            <span class="<%= tag_color_classes(tag) %> font-semibold border px-2 py-0.5 rounded-md uppercase tracking-wider text-[10px]"><%= tag.name %></span>
           <% end %>
         </div>
       <% end %>
@@ -65,10 +65,12 @@
       </span>
     </div>
     
+    <% can_downvote = Current.game_session.allow_downvotes? || current_weight > 0 %>
     <%= button_to vote_vote_path(game, direction: 'down', view: @view_mode || 'list'), 
         method: :post, 
-        class: "p-1 text-slate-400 hover:text-red-400 transition-colors group/down" do %>
-      <%= heroicon "chevron-down", variant: :outline, options: { class: "w-4 h-4 sm:w-5 sm:h-5 group-active/down:scale-90 transition-transform" } %>
+        disabled: !can_downvote,
+        class: "p-1 transition-colors group/down #{can_downvote ? 'text-slate-400 hover:text-red-400' : 'text-slate-700 cursor-not-allowed'}" do %>
+      <%= heroicon "chevron-down", variant: :outline, options: { class: "w-4 h-4 sm:w-5 sm:h-5 #{can_downvote ? 'group-active/down:scale-90 transition-transform' : ''}" } %>
     <% end %>
   </div>
 </div>

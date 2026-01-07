@@ -28,7 +28,8 @@ class SettingsController < ApplicationController
       :bonus_votes, :votes_per_game, :punish_previous_game_tags,
       :previous_game_id, :previous_game_penalty, :enable_bonus_votes,
       :exclude_previous_game, :voting_countdown_enabled, :voting_countdown_duration_minutes,
-      :wheel_enabled, :wheel_filter_mode, :wheel_filter_top_count, :wheel_proportional
+      :wheel_enabled, :wheel_filter_mode, :wheel_filter_top_count, :wheel_proportional,
+      :allow_downvotes
     )
   end
 end

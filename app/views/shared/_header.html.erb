@@ -13,9 +13,11 @@
                     <%= heroicon "bolt", variant: :outline, options: { class: "w-4 h-4" } %>
                     <span class="hidden sm:inline">Voting</span>
                 <% end %>
+                <% if policy(Game).index? %>
                 <%= link_to games_path, class: "px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2 #{current_page?(games_path) ? 'bg-purple-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'}" do %>
                     <%= heroicon "puzzle-piece", variant: :outline, options: { class: "w-4 h-4" } %>
                     <span class="hidden sm:inline">Games</span>
+                <% end %>
                 <% end %>
             </div>
         </nav>

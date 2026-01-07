@@ -38,11 +38,15 @@ class VotesController < ApplicationController
     if direction == "up"
       if existing_vote
         # Try to increment weight
-        existing_vote.weight += 1
-        unless existing_vote.save
-          flash.now[:alert] = existing_vote.errors.full_messages.join(", ")
-          # Reload to reset any invalid changes in memory
-          existing_vote.reload
+        if existing_vote.weight == -1
+          existing_vote.destroy
+        else
+          existing_vote.weight += 1
+          unless existing_vote.save
+            flash.now[:alert] = existing_vote.errors.full_messages.join(", ")
+            # Reload to reset any invalid changes in memory
+            existing_vote.reload
+          end
         end
       else
         # Create new vote with weight 1 (standard vote)
@@ -52,6 +56,19 @@ class VotesController < ApplicationController
         end
       end
     else
+      # Check downvote permission
+      if !Current.game_session.allow_downvotes?
+        # Only allow if we are undoing an upvote (weight > 0)
+        unless existing_vote && existing_vote.weight > 0
+          respond_to do |format|
+            format.html { redirect_to votes_path, alert: "Downvoting is disabled!" }
+            format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash", locals: { alert: "Downvoting is disabled!" }) }
+          end
+          return
+        end
+      end
+
+
       if existing_vote
         # Allow decrementing, but cap at -1
         if existing_vote.weight == 1
