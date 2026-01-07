@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+require "fileutils"
+
+APP_ROOT = File.expand_path("..", __dir__)
+
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+FileUtils.chdir APP_ROOT do
+  puts "== Running RuboCop =="
+  system! "bin/rubocop"
+
+  puts "\n== Running Brakeman =="
+  system! "bin/brakeman"
+
+  puts "\n== Running tests =="
+  system! "bin/rails test"
+end
