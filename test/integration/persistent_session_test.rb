@@ -1,4 +1,4 @@
-require "test_helper"
+wrequire "test_helper"
 
 class PersistentSessionTest < ActionDispatch::IntegrationTest
   test "session persists via signed cookie when session is empty" do
